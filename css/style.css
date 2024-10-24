@@ -1,0 +1,211 @@
+@font-face {
+	font-family: 'poppins';
+	src: url(../fonts/Poppins-Regular.ttf);
+}
+
+/* Body */
+body {
+	font-family: 'poppins';
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: 'poppins';
+	font-weight: 200;
+}
+a {
+	text-decoration: none;
+}
+
+/* Custom Classes */
+.catering-nav  a.nav-link {
+	padding-top: 29px !important;
+	padding-bottom: 29px !important;
+	color: #ffffff !important;
+}
+.btn-lg {
+	padding: 14px 32px;
+	font-size: 18px;
+}
+.btn-success {
+	background-color: #418043 !important;
+	border-color: #418043 !important;
+}
+.btn-success:hover {
+	background-color: #55a630 !important;
+	border-color: #55a630 !important;
+}
+.btn-light:hover {
+	background-color: #55a630 !important;
+	border-color: #55a630 !important;
+	color: #fff !important;
+}
+.bg-success {
+	background-color: #418043 !important;
+}
+.mt-n7 {
+	margin-top: -7rem;
+}
+.mb-n7 {
+	margin-bottom: -7rem;
+}
+
+/* Homepage */
+.bg-homepage {
+	background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../img/hero.jpeg);
+	background-position: center top;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+.bg-veg {
+	background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url(../img/vegetables-background.svg);
+	background-color: #000;
+	background-position: 0% 0%;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+.bg-today-menu {
+	background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../img/home-menu-background.jpeg);
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+.client-img {
+	width: 100px;
+}
+
+/* Servcies */
+.bg-servcies {
+	background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../img/bg-services.jpg);
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+.bg-reservation {
+	background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../img/reservation-background.webp);
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+/* Menu */
+.bg-menu {
+	background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../img/bg-menu.jpg);
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+/* About */
+.bg-about {
+	background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../img/bg-about.jpg);
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+/* Contact */
+.bg-contact {
+	background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../img/bg-contact.jpg);
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+/* Footer */
+.bg-footer {
+	background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url(../img/bg-footer.svg);
+	background-color: #000;
+	background-position: 0% 0%;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+/* Mobile Media  */
+@media (max-width:992px) {
+	.m-none {
+		display: none;
+	}
+}
+
+
+
+
+.cart-btn {
+    position: relative; /* This ensures the badge is positioned relative to the button */
+    box-shadow: 0 10px 40px 0 rgba(47, 47, 47, 0.1) !important;
+    background-color: #fff;
+    color: #2d2a3e;
+    width: 50px;
+    border-radius: 100px;
+    cursor: pointer;
+    height: 50px;
+    border: 3px solid #ebebeb;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cart-btn i {
+    font-size: 24px; /* Adjust the size of the cart icon */
+}
+
+.cart-count {
+    position: absolute;
+    top: -10px; /* Adjust the position of the badge */
+    right: -10px; /* Adjust the position of the badge */
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.add-to_cart{
+    text-wrap: nowrap;
+    background: #c1c1c1;
+    padding: 6px 15px;
+    color: black;
+    cursor: pointer;
+}
+
+
+.add-to_cart:hover{
+    text-wrap: nowrap;
+    background: #418043;
+    padding: 6px 15px;
+    color: black;
+    cursor: pointer;
+}
+
+
+.quantity-osahan {
+	min-width: 110px;
+    max-width: 125px;
+    text-align: center;
+    border-radius: 10px;
+    border: 0px solid #dee2e6;
+    overflow: hidden;
+    padding: 3px;
+}
+
+.quantity-osahan .form-control {
+	border: none;
+	text-align: center;
+}
+
+.item_desc{
+	font-size: 13px;
+    color: #878787;
+}
+
+.lh-20{
+	line-height: 20px;
+}
