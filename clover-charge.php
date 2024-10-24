@@ -5,7 +5,27 @@ session_start();
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
+require_once('vendor/autoload.php');
+
 require ('connections.php');
+$client = new \GuzzleHttp\Client();
+
+$response = '';
+$response1 = '';
+$CustomerID = 0;
+
+
+
+$response = $client->request('POST', 'https://sandbox.dev.clover.com/v3/merchants/'. $merchantID .'/customers', [
+    'body' => '{"firstName":"James","lastName":"Bond","emailAddresses":[{"emailAddress":"james@gmail.com"}],"phoneNumbers":[{"phoneNumber":"654987987987"}],"addresses":[{"address1":"A1","address2":"A2","address3":"A3","city":"hyderabad","country":"India","state":"Telangana","zip":"500042"}]}',
+    'headers' => [
+      'accept' => 'application/json',
+      'content-type' => 'application/json',
+    ],
+]);
+
+  
+
 
 
 function get_client_ip() {
@@ -27,8 +47,12 @@ function generate_uuid_v4() {
     );
 }
 
-$response = '';
-$response1 = '';
+
+
+
+
+
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $uuid4_key = generate_uuid_v4();

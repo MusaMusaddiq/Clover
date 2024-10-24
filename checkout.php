@@ -118,7 +118,7 @@ $total = $grandTotal + $tax + $tip;
 
             <div class="col-lg-6 col-12">
                 <h4 class="fw-bold pb-2">Your Details </h4>
-                <form class="row g-3">
+                <form class="row g-3" action="clover-charge.php"  method="post" id="SaveOrder" >
                     <div class="col-md-6">
                         <label for="inputFirstName" class="form-label small text-muted">First Name</label>
                         <input type="text" class="form-control" id="FirstName" name="FirstName" placeholder="First name"  required>
