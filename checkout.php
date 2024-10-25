@@ -1,10 +1,10 @@
 <?php 
 session_start();
-
 $grandTotal = 0;
 $tax = 0;
 $taxpercentage = 7;
 $tip = 7;
+
 
 if(isset($_SESSION['cart']) &&  count($_SESSION['cart']) > 0){
     foreach($_SESSION['cart'] as $item){
@@ -69,94 +69,50 @@ $total = $grandTotal + $tax + $tip;
 
     <div class="container pb-5">
         <div class="row g-4">
-        <div class="col-lg-6 col-12 ps-lg-5">
-                <div class="sticky-sidebar">
-                    <div class="border p-5 rounded-4">
-                        <h5 class="fw-bold pb-2">Your order </h5>
-                        <div class="d-flex align-items-center justify-content-between border-bottom py-3">
-                            <h6 class="fw-bold mb-0">Product </h6>
-                            <h6 class="fw-bold mb-0">Subtotal </h6>
-                        </div>
-                        
-                        <?php 
-                        $grandTotal = 0;
-                        foreach($_SESSION['cart'] as $item): 
-                            $itemTotal = $item['producttotal']; 
-                            $grandTotal += $itemTotal;
-                        ?>
-
-                        <div class="d-flex align-items-center justify-content-between border-bottom py-3">
-                            <h6 class="mb-0 lh-20">
-                                <?php echo htmlspecialchars($item['productname']); ?> × <?php echo htmlspecialchars($item['productqty']); ?> <br>
-                                <?php if (($item['modifiername']) !=='No Addon'): ?>
-                                    <span class="item_desc">Addon : <?php echo htmlspecialchars($item['modifiername']); ?></span>
-                                <?php endif; ?>
-                             </h6>
-                            <p class="mb-0">$<?php echo htmlspecialchars(number_format($itemTotal, 2)); ?></p>
-                        </div>
-                        <?php endforeach; ?>
-
-                        <div class="d-flex align-items-center justify-content-between border-bottom py-3">
-                            <h6 class="fw-bold mb-0">Subtotal </h6>
-                            <p class="fw-bold mb-0">$<?php echo $grandTotal ?></p>
-                        </div>
-                        <div class="d-flex align-items-center justify-content-between border-bottom py-3">
-                            <h6 class="fw-bold mb-0">Tax 7% </h6>
-                            <p class="fw-bold mb-0">$<?php echo htmlspecialchars(number_format($tax, 2)); ?></p>
-                        </div>
-                        <div class="d-flex align-items-center justify-content-between border-bottom py-3">
-                            <h6 class="fw-bold mb-0">Tip </h6>
-                            <p class="fw-bold mb-0">$0</p>
-                        </div>
-                        <div class="d-flex align-items-center justify-content-between py-3">
-                            <h5 class="fw-bold mb-0 text-purple">Total </h5>
-                            <p class="fw-bold mb-0 h5 text-purple">$<?php echo htmlspecialchars(number_format($total, 2)); ?></p>
-                        </div>                       
-                    </div>
-                </div>
-            </div>
+            
+        <?php include('order-details.php'); ?>
 
             <div class="col-lg-6 col-12">
                 <h4 class="fw-bold pb-2">Your Details </h4>
-                <form class="row g-3" action="clover-charge.php"  method="post" id="SaveOrder" >
+                <form class="row g-3" action="saveuserdetails.php"  method="post" id="SaveUserdetails" >
                     <div class="col-md-6">
                         <label for="inputFirstName" class="form-label small text-muted">First Name</label>
-                        <input type="text" class="form-control" id="FirstName" name="FirstName" placeholder="First name"  required>
+                        <input type="text" class="form-control" id="FirstName" name="FirstName" value="<?php echo isset($_SESSION['UserDetails']['FirstName']) ? $_SESSION['UserDetails']['FirstName'] : ''; ?>" placeholder="First name"  required>
                     </div>
                     <div class="col-md-6">
                         <label for="inputLastname" class="form-label small text-muted">Last Name</label>
-                        <input type="text" class="form-control" id="Lastname" name="Lastname" placeholder="Last name" required>
+                        <input type="text" class="form-control" id="Lastname" name="Lastname" value="<?php echo isset($_SESSION['UserDetails']['Lastname']) ? $_SESSION['UserDetails']['Lastname'] : ''; ?>" placeholder="Last name" required>
                     </div>
                     <div class="col-md-6">
                         <label for="inputphone" class="form-label small text-muted">Phone</label>
-                        <input type="text" class="form-control" id="phone" name="phone" placeholder="Phone number" required>
+                        <input type="text" class="form-control" id="phone" name="Phone" value="<?php echo isset($_SESSION['UserDetails']['Phone']) ? $_SESSION['UserDetails']['Phone'] : ''; ?>" placeholder="Phone number" required>
                     </div>
                     <div class="col-md-6">
                         <label for="inputEmail" class="form-label small text-muted">Email</label>
-                        <input type="email" class="form-control" id="Email" name="Email" placeholder="Email address" required>
+                        <input type="email" class="form-control" id="Email" name="Email"  value="<?php echo isset($_SESSION['UserDetails']['Email']) ? $_SESSION['UserDetails']['Email'] : ''; ?>" placeholder="Email address" required>
                     </div>
                     <div class="col-md-12">
                         <label for="inputAddress" class="form-label small text-muted">Address</label>
-                        <input type="text" class="form-control" id="Address" name="Address" placeholder="Address" required>
+                        <input type="text" class="form-control" id="Address" name="Address" value="<?php echo isset($_SESSION['UserDetails']['Address']) ? $_SESSION['UserDetails']['Address'] : ''; ?>" placeholder="Address" required>
                     </div>
                     <div class="col-md-4">
                         <label for="inputCity" class="form-label small text-muted">City</label>
-                        <input type="text" class="form-control" id="City" name="City" placeholder="City" required>
+                        <input type="text" class="form-control" id="City" name="City" value="<?php echo isset($_SESSION['UserDetails']['City']) ? $_SESSION['UserDetails']['City'] : ''; ?>" placeholder="City" required>
                     </div>
                     <div class="col-md-4">
                         <label for="inputState" class="form-label small text-muted">State</label>
-                        <input type="text" class="form-control" id="State" name="State" placeholder="State" required>
+                        <input type="text" class="form-control" id="State" name="State" value="<?php echo isset($_SESSION['UserDetails']['State']) ? $_SESSION['UserDetails']['State'] : ''; ?>" placeholder="State" required>
                     </div>
                     <div class="col-md-4">
                         <label for="inputZip" class="form-label small text-muted">Zip</label>
-                        <input type="text" class="form-control" id="Zip" name="Zip" placeholder="Zip code" required>
+                        <input type="text" class="form-control" id="Zip" name="Zip" value="<?php echo isset($_SESSION['UserDetails']['Zip']) ? $_SESSION['UserDetails']['Zip'] : ''; ?>" placeholder="Zip code" required>
                     </div>
                     <div class="col-12">
                         <label for="exampleFormControlTextarea1" class="form-label small text-muted">Order notes (optional)</label>
-                        <textarea class="form-control" id="ordernotes" name="ordernotes" placeholder="Note about your order" rows="5"></textarea>
+                        <textarea class="form-control" id="ordernotes" name="ordernotes" value="<?php echo isset($_SESSION['UserDetails']['ordernotes']) ? $_SESSION['UserDetails']['ordernotes'] : ''; ?>" placeholder="Note about your order" rows="5"></textarea>
                     </div>
                     <div class="col-md-12">
-                        <button type="submit" class="btn btn-purple px-3 py-3 w-100">Payment</button>
+                        <button type="submit" name="SaveUserdetails" class="btn btn-purple px-3 py-3 w-100">Payment</button>
                     </div>
                 </form>
 

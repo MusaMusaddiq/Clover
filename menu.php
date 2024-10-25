@@ -77,7 +77,7 @@ foreach ($menu_categories->elements as &$category) {
 									<li class="breadcrumb-item text-white small active" aria-current="page">MENU </li>
 								</ol>
 							</nav>
-							<h1 class="display-1" data-aos="fade-up" data-aos-duration="600">OUR MENU </h1>
+							<h1 class="display-1" data-aos="fade-up" data-aos-duration="600">MENU </h1>
 						</div>
 					</div>
 				</div>
