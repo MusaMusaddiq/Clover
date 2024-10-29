@@ -355,6 +355,7 @@ $total = $grandTotal + $tax + $tip;
                             form.appendChild(hiddenInput);
 
                             let formData = new FormData(form);
+                            debugger;
                             fetch('clover-charge.php', {
                                 method: 'POST',
                                 body: formData
