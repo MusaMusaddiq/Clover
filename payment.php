@@ -109,7 +109,7 @@ $total = $grandTotal + $tax + $tip;
 }
 
 .pro{
-        width: 98%;
+    width: 98%;
     position: absolute;
     display: block;
     z-index: 999;

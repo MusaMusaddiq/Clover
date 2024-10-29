@@ -53,12 +53,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $Address = $_SESSION['UserDetails']['address'];
     $City = $_SESSION['UserDetails']['City'];
     $country ='US';
-    $phone = $_SESSION['UserDetails']['pnumber'];
+    $phone = $_SESSION['UserDetails']['Phone'];
     $State = $_SESSION['UserDetails']['State'];
     $zip = $_SESSION['UserDetails']['Zip'];
-    $Email = $_SESSION['UserDetails']['email'];
+    $Email = $_SESSION['UserDetails']['Email'];
     // $Clover_url = "https://scl.clover.com";
-    $Clover_url = "https://sandbox.dev.clover.com/v3/merchants/";
+    // $Clover_url = "https://sandbox.dev.clover.com/v3/merchants/";
+    $Clover_url = "https://sandbox.dev.clover.com";
     $TipAmount = $_SESSION['tip'];
     $TaxAmount = $_SESSION['tax'];
     $MID = $merchantID;
