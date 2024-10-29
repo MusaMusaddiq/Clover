@@ -35,6 +35,148 @@ $total = $grandTotal + $tax + $tip;
     <link rel="stylesheet" href="vender/remixicon/remixicon.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/common.css">
+    <script src="https://checkout.sandbox.dev.clover.com/sdk.js"></script>
+
+    <style>
+    /* shamsheer */
+    
+.payment-container {
+  background-color: #FFFFFF;
+  /* border-top-left-radius: 15px;
+  border-top-right-radius: 15px; */
+  box-shadow: 0 0 6px 0 rgba(141,151,158,0.2);
+  padding: 0px 20px;
+  width: 100%;
+  
+}
+.clover-footer{
+  display:none
+}
+
+.payment-container * {
+  font-family: Roboto, "Open Sans", sans-serif;
+  font-size: 16px;
+}
+
+.payment-container .form-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.payment-container .form-row.top-row {
+  margin-top: 16px;
+}
+
+.input-errors {
+  font-size: 12px;
+  position: absolute;
+  margin-left: 5px;
+  margin-top: 54px;
+  color: red;
+}
+
+.payment-container .form-row .field {
+  box-sizing: border-box;
+  border: 1px solid #DEE0E1;
+  border-radius: 5px;
+  height: 55px;
+  margin-bottom: 30px;
+  padding: 14px;
+  width: 100%;
+}
+
+.payment-container .button-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.payment-container .button-container button {
+  background-color: #228800;
+  border: none;
+  border-radius: 3px;
+  color: #FFFFFF;
+  display: block;
+  height: 47px;
+  width: 300px;
+  cursor: pointer;
+}
+.user{
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.pro{
+        width: 98%;
+    position: absolute;
+    display: block;
+    z-index: 999;
+    text-align: center;
+    margin-right: auto;
+    background: white;
+    margin-left: -20px;
+    margin-top: 50px;
+}
+
+@media screen and (max-width: 767px) {
+    .pro{
+            margin-top: 52px;
+    height: 387px;
+    }
+}
+
+#payment-request-button {
+  width: 160px;
+  height: 40px;
+  margin: 0 auto;
+  display: none;
+}
+
+
+  
+  .payment-container {
+    height: 500px;
+  }
+
+
+  
+ 
+
+
+.hr {
+  width: 100%; 
+  height: 10px; 
+  border-bottom: 1px solid black; 
+  text-align: center;
+  margin: 20px 0;
+}
+
+.hr span {
+  font-size: 10px; 
+  background-color: #FFF; 
+  padding: 0 10px;
+}
+.offer-section:after {
+    content: "";
+    background-image: url(assets/images/section-shape-img1.png);
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -ms-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    height: 0px;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: 9;
+}
+    </style>
+
 </head>
 
 <body data-aos-easing="ease" data-aos-duration="400" data-aos-delay="0">
@@ -76,12 +218,13 @@ $total = $grandTotal + $tax + $tip;
                 <h4 class="fw-bold pb-2">Payment Details </h4>
               
 
+                <div class="payment-container">
                 <form action="/charge" method="post" id="payment-form">
                     <div style="background: white;" id="farpaysuc"></div>
                     <div class="form-row top-row">
                         <div id="payment-request-button" class="payment-request-button full-width"></div>
                     </div>
-                    <img src="img/we-use.png">
+                    <!-- <img src="img/we-use.png"> -->
                     <div class="form-row top-row">
                         <div id="card-number" class="field full-width"></div>
                         <div class="input-errors" id="card-number-errors" role="alert"></div>
@@ -112,7 +255,7 @@ $total = $grandTotal + $tax + $tip;
                         <button>Submit Payment </button>
                     </div>
                 </form>
-
+                </div>
 
 
             </div>
@@ -125,7 +268,8 @@ $total = $grandTotal + $tax + $tip;
     <?php include('sidenav.php') ?>
 
     <script>
-        const clover = new Clover('0540a9cd140f0ad0f7e93dd59133ec0b');
+        debugger;
+        const clover = new Clover('0ee66f639232cceffd3f72808ab1a017');
         const elements = clover.elements();
         const styles = {
             body: {
@@ -136,22 +280,23 @@ $total = $grandTotal + $tax + $tip;
                 fontSize: '16px',
             },
         };
+        debugger;
         const cardNumber = elements.create('CARD_NUMBER', styles);
         const cardDate = elements.create('CARD_DATE', styles);
         const cardCvv = elements.create('CARD_CVV', styles);
         const cardPostalCode = elements.create('CARD_POSTAL_CODE', styles);
-
+        debugger;
         cardNumber.mount('#card-number');
         cardDate.mount('#card-date');
         cardCvv.mount('#card-cvv');
         cardPostalCode.mount('#card-postal-code');
-
+        debugger;
         const cardResponse = document.getElementById('card-response');
         const displayCardNumberError = document.getElementById('card-number-errors');
         const displayCardDateError = document.getElementById('card-date-errors');
         const displayCardCvvError = document.getElementById('card-cvv-errors');
         const displayCardPostalCodeError = document.getElementById('card-postal-code-errors');
-
+        debugger;
         cardNumber.addEventListener('change', function (event) {
             console.log(`cardNumber changed ${JSON.stringify(event)}`);
         });
@@ -183,19 +328,23 @@ $total = $grandTotal + $tax + $tip;
         cardPostalCode.addEventListener('blur', function (event) {
             console.log(`cardPostalCode blur ${JSON.stringify(event)}`);
         });
-
+        debugger;
         const form = document.getElementById('payment-form');
         form.addEventListener('submit', function (event) {
+            debugger;
             document.getElementById('farpaysuc').innerHTML = "<img src='processing.gif' class='pro' id='farpaysuc'>";
             event.preventDefault();
             clover.createToken()
                 .then(function (result) {
+                    debugger;
                     if (result.errors) {
+                        debugger;
                         alert(result.errors.CARD_NUMBER);
                         window.location.reload();
                         Object.values(result.errors).forEach(function (value) {
                             console.log(value);
                         });
+                        debugger;
                     } else {
                         if (result && result.token) {
                             var form = document.getElementById('payment-form');
@@ -232,9 +381,9 @@ $total = $grandTotal + $tax + $tip;
                 });
         });
 
-        // let total = parseFloat("<?php echo $_SESSION['total']; ?>");
+        let total = parseFloat("<?php echo $total; ?>");
         let paymentAmount = (parseFloat(total.toFixed(2)) * 100).toFixed(0);
-
+        debugger;
         const paymentReqData = {
             country: 'US',
             currency: 'usd',
@@ -245,12 +394,12 @@ $total = $grandTotal + $tax + $tip;
             requestPayerName: true,
             requestPayerEmail: true,
         };
-
+        debugger;
         const paymentRequest = clover.paymentRequest(paymentReqData);
         const paymentRequestButton = elements.create('PAYMENT_REQUEST_BUTTON', {
             paymentReqData
         });
-
+        debugger;
         paymentRequest.canMakePayment().then(function (result) {
             if (result) {
                 paymentRequestButton.mount('#payment-request-button');
@@ -258,19 +407,20 @@ $total = $grandTotal + $tax + $tip;
                 document.getElementById('payment-request-button').style.display = 'none';
             }
         });
-
+        debugger;
         paymentRequestButton.addEventListener('paymentMethod', function (ev) {
             alert(JSON.stringify(ev));
         });
-
+        debugger;
         function cloverTokenHandler(token) {
+            debugger;
             var form = document.getElementById('payment-form');
             var hiddenInput = document.createElement('input');
             hiddenInput.setAttribute('type', 'hidden');
             hiddenInput.setAttribute('name', 'cloverToken');
             hiddenInput.setAttribute('value', token);
             form.appendChild(hiddenInput);
-
+            debugger;
             event.preventDefault();
         }
 

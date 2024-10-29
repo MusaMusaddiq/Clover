@@ -16,18 +16,6 @@ $CustomerID = 0;
 
 
 
-$response = $client->request('POST', 'https://sandbox.dev.clover.com/v3/merchants/'. $merchantID .'/customers', [
-    'body' => '{"firstName":"James","lastName":"Bond","emailAddresses":[{"emailAddress":"james@gmail.com"}],"phoneNumbers":[{"phoneNumber":"654987987987"}],"addresses":[{"address1":"A1","address2":"A2","address3":"A3","city":"hyderabad","country":"India","state":"Telangana","zip":"500042"}]}',
-    'headers' => [
-      'accept' => 'application/json',
-      'content-type' => 'application/json',
-    ],
-]);
-
-  
-
-
-
 function get_client_ip() {
     if (!empty($_SERVER['HTTP_X_REAL_IP'])) {
         return $_SERVER['HTTP_X_REAL_IP'];
@@ -169,7 +157,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $OrderPrintData = ['id' => $OrderID];
             $smartPrintData = ['event' => 'PrintOrder', 'data' => $OrderID];
 
-            $printch = curl_init('https://api.clover.com/v3/merchants/' . $MID . '/print_event');
+            $printch = curl_init('https://sandbox/api.clover.com/v3/merchants/' . $MID . '/print_event');
             curl_setopt_array($printch, [
                 CURLOPT_POST => TRUE,
                 CURLOPT_RETURNTRANSFER => TRUE,
