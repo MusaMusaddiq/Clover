@@ -12,7 +12,9 @@ $client = new \GuzzleHttp\Client();
 
 $response = '';
 $response1 = '';
-$CustomerID = 0;
+$CustomerID = "9C7JY6FNR5V76";
+
+
 
 
 
@@ -72,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $totalProducts = [];
 
     if ($_SESSION['cart'] >= 1) {
-        for ($i = 1; $i <= $_SESSION['cart']; $i++) {
+        for ($i = 0; $i <= $_SESSION['cart']; $i++) {
             $Price = $_SESSION['cart'][$i]['productprice'];
             $Qty = $_SESSION['cart'][$i]['productqty'];
             $TotalPrice = $Qty * $Price;

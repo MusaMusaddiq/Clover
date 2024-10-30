@@ -346,7 +346,9 @@ $total = $grandTotal + $tax + $tip;
                         });
                         debugger;
                     } else {
+                        debugger;
                         if (result && result.token) {
+                            debugger;
                             var form = document.getElementById('payment-form');
                             var hiddenInput = document.createElement('input');
                             hiddenInput.setAttribute('type', 'hidden');
@@ -362,6 +364,7 @@ $total = $grandTotal + $tax + $tip;
                             })
                                 .then(response => response.json())
                                 .then(data => {
+                                    debugger;
                                     if (data.status == "paid") {
                                         window.location.href = 'order-mail.php';
                                     } else {
