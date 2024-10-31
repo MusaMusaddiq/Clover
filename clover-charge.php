@@ -52,20 +52,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $PrintauthToken = '8cd0a5b7-512d-23dd-8d89-f6e2415024b5';
     $FirstName = $_SESSION['UserDetails']['FirstName'];
     $Lastname = ' ' . $_SESSION['UserDetails']['Lastname'];
-    $Address = $_SESSION['UserDetails']['address'];
+    $Address = $_SESSION['UserDetails']['Address'];
     $City = $_SESSION['UserDetails']['City'];
     $country ='US';
     $phone = $_SESSION['UserDetails']['Phone'];
     $State = $_SESSION['UserDetails']['State'];
     $zip = $_SESSION['UserDetails']['Zip'];
     $Email = $_SESSION['UserDetails']['Email'];
-    // $Clover_url = "https://scl.clover.com";
-    // $Clover_url = "https://sandbox.dev.clover.com/v3/merchants/";
-    $Clover_url = "https://sandbox.dev.clover.com";
-    $TipAmount = $_SESSION['tip'];
-    $TaxAmount = $_SESSION['tax'];
+    // $Clover_url="https://scl-sandbox.dev.clover.com";//https://scl.clover.com old
+    $Clover_url="https://sandbox.dev.clover.com";
+
+    $TipAmount = 4;
+    $TaxAmount = 7;
     $MID = $merchantID;
-    $TotalWithTip = $_SESSION['total'];
+    $TotalWithTip = 200;
     $TotalWothoutTip = $TotalWithTip - $TipAmount;
     $paymentAmount = round($TotalWothoutTip, 2) * 100;
     $TotalAmount = $paymentAmount;
@@ -75,7 +75,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($_SESSION['cart'] >= 1) {
         for ($i = 0; $i <= $_SESSION['cart']; $i++) {
-            $Price = $_SESSION['cart'][$i]['productprice'];
+            $priceInCents  = str_replace('$', '', $_SESSION['cart'][$i]['productprice']);
+            $Price = intval(floatval($priceInCents) * 100);
             $Qty = $_SESSION['cart'][$i]['productqty'];
             $TotalPrice = $Qty * $Price;
             $Taxinfo = [
@@ -83,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'rate' => (int)$taxPer
             ];
             $Product = [
-                'amount' => (float)$Price,
+                'amount' => $Price,
                 'currency' => 'usd',
                 'description' => $_SESSION['cart'][$i]['productname'],
                 'inventory_id' => $_SESSION['cart'][$i]['productid'],
@@ -94,90 +95,112 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    curl_setopt_array($curl, [
-        CURLOPT_URL => $Clover_url . "/v3/orders",
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_CUSTOMREQUEST => "POST",
-        CURLOPT_POSTFIELDS => json_encode([
-            'shipping' => [
-                'address' => [
-                    'City' => $City,
-                    'country' => $country,
-                    'line1' => $Address,
-                    'postal_code' => $zip,
-                    'State' => $State
-                ],
-                'name' => $FirstName . ' ' . $Lastname,
-                'phone' => $phone
+    $body = [
+        'shipping' => [
+            'address' => [
+                'city' => $City,
+                'country' => $country,
+                'line1' => $Address,
+                'postal_code' => $zip,
+                'state' => $State
             ],
-            'currency' => 'usd',
-            'email' => $Email,
-            'items' => $totalProducts
-        ]),
-        CURLOPT_HTTPHEADER => [
-            "accept: application/json",
-            'Authorization: Bearer ' . $authToken,
-            "content-type: application/json"
-        ]
-    ]);
-
-    $response = curl_exec($curl);
+            'name' => $FirstName . ' ' . $Lastname,
+            'phone' =>  $phone
+        ],
+        'currency' => 'USD',
+        'email' => $Email,
+        'items' => $totalProducts 
+    ];
     
-    if ($response === FALSE) {
-        die(curl_error($curl));
-    }
-
-    $responseData = json_decode($response, TRUE);
-    $OrderID = $responseData['id'];
     
-    $ch2 = curl_init();
-    curl_setopt_array($ch2, [
-        CURLOPT_URL => $Clover_url . "/v1/orders/" . $OrderID . "/pay",
+    $jsonBody = json_encode($body);
+    curl_setopt_array($curl, array(
+        CURLOPT_URL => 'https://sandbox.dev.clover.com/v3/merchants/'.$merchantID.'/orders',
         CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_CUSTOMREQUEST => "POST",
-        CURLOPT_POSTFIELDS => json_encode([
-            'ecomind' => 'ecom',
-            'customer' => $CustomerID,
-            'amount' => $TotalAmount,
-            'currency' => 'usd',
-            'source' => $payment_id,
-            'tip_amount' => (int)($TipAmount * 100)
-        ]),
-        CURLOPT_HTTPHEADER => [
-            "accept: application/json",
-            'Authorization: Bearer ' . $authToken,
-            "content-type: application/json",
-            'idempotency-key: ' . $uuid4_key,
-            "x-forwarded-for: " . $client_ip
-        ]
-    ]);
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'POST',
+        CURLOPT_POSTFIELDS => $jsonBody,
+        CURLOPT_HTTPHEADER => array(
+          'Content-Type: application/json',
+          'Authorization: Bearer ' . $authToken
+        ),
+      ));
+      $response = curl_exec($curl);
+      curl_close($curl);
+      $responseData = json_decode($response, true);
+      $OrderID =  $responseData['id'];
+    
 
-    $response2 = curl_exec($ch2);
+      $ch2 = curl_init();
 
-    try {
-        $orderResult = json_decode($response2, TRUE);
-        if ($orderResult['status'] == "paid") {
-            $OrderPrintData = ['id' => $OrderID];
-            $smartPrintData = ['event' => 'PrintOrder', 'data' => $OrderID];
+      $paymentBody = [
+          'ecomind' => 'ecom',
+          'customer' => $CustomerID,
+          'amount' => $TotalAmount,
+          'currency' => 'usd',
+          'source' => $payment_id,
+          'tip_amount' => (int)($TipAmount * 100)
+      ];
+      
+      $paymentjsonBody = json_encode($paymentBody);
+      
+      // Set cURL options using the correct cURL handle ($ch2)
+      curl_setopt_array($ch2, array(
+          CURLOPT_URL => "https://scl-sandbox.dev.clover.com/v1/orders/" . $OrderID . "/pay",
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_CUSTOMREQUEST => "POST",
+          CURLOPT_POSTFIELDS => $paymentjsonBody,
+          CURLOPT_HTTPHEADER => [
+              "accept: application/json",
+              'Authorization: Bearer ' . $authToken,
+              "content-type: application/json",
+              'idempotency-key: ' . $uuid4_key,
+              "x-forwarded-for: " . $client_ip
+          ]
+      ));
+      
+      $response2 = curl_exec($ch2);
+      
+      // Check for cURL errors
+      if ($response2 === false) {
+          echo 'cURL Error: ' . curl_error($ch2);
+      } else {
+          // Optionally decode and process the response
+          $responseData = json_decode($response2, true);
+          print_r($responseData); // Or handle the response as needed
+      }
+      
+      // Close the cURL handle
+      curl_close($ch2);
+      
+    // try {
+    //     $orderResult = json_decode($response2, TRUE);
+    //     if ($orderResult['status'] == "paid") {
+    //         $OrderPrintData = ['id' => $OrderID];
+    //         $smartPrintData = ['event' => 'PrintOrder', 'data' => $OrderID];
 
-            $printch = curl_init('https://sandbox/api.clover.com/v3/merchants/' . $MID . '/print_event');
-            curl_setopt_array($printch, [
-                CURLOPT_POST => TRUE,
-                CURLOPT_RETURNTRANSFER => TRUE,
-                CURLOPT_HTTPHEADER => [
-                    'Authorization: Bearer ' . $PrintauthToken,
-                    'Content-Type: application/json'
-                ],
-                CURLOPT_POSTFIELDS => '{"orderRef":{"id":"' . $OrderID . '"}}'
-            ]);
+    //         $printch = curl_init('https://sandbox/api.clover.com/v3/merchants/' . $MID . '/print_event');
+    //         curl_setopt_array($printch, [
+    //             CURLOPT_POST => TRUE,
+    //             CURLOPT_RETURNTRANSFER => TRUE,
+    //             CURLOPT_HTTPHEADER => [
+    //                 'Authorization: Bearer ' . $PrintauthToken,
+    //                 'Content-Type: application/json'
+    //             ],
+    //             CURLOPT_POSTFIELDS => '{"orderRef":{"id":"' . $OrderID . '"}}'
+    //         ]);
 
-            $responseprint = curl_exec($printch);
-            if ($responseprint === FALSE) {
-                echo '<script>console.log(' . curl_error($printch) . ');</script>';
-            }
-        }
-    } catch (Exception $e) {
-    }
+    //         $responseprint = curl_exec($printch);
+    //         if ($responseprint === FALSE) {
+    //             echo '<script>console.log(' . curl_error($printch) . ');</script>';
+    //         }
+    //     }
+    // } catch (Exception $e) {
+    // }
 
     echo $response2;
 }

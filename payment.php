@@ -212,6 +212,8 @@ $total = $grandTotal + $tax + $tip;
     <div class="container pb-5">
         <div class="row g-4">
 
+        <a href="test.php"><button class="btn btn-primary">test</button></a>
+
             <?php include('order-details.php'); ?>
 
             <div class="col-lg-6 col-12">
@@ -425,7 +427,9 @@ $total = $grandTotal + $tax + $tip;
             hiddenInput.setAttribute('value', token);
             form.appendChild(hiddenInput);
             debugger;
+            console.log('payment Token',token);
             event.preventDefault();
+           
         }
 
     </script>

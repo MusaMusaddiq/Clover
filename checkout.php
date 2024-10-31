@@ -69,7 +69,9 @@ $total = $grandTotal + $tax + $tip;
 
     <div class="container pb-5">
         <div class="row g-4">
-            
+        
+        
+
         <?php include('order-details.php'); ?>
 
             <div class="col-lg-6 col-12">
