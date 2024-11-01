@@ -12,7 +12,7 @@ $client = new \GuzzleHttp\Client();
 
 $response = '';
 $response1 = '';
-$CustomerID = "9C7JY6FNR5V76";
+// $CustomerID = "9C7JY6FNR5V76";
 
 
 
@@ -49,18 +49,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $client_ip = get_client_ip();
     $payment_id = $_POST['cloverToken'];
     $authToken = $token;
-    $PrintauthToken = '8cd0a5b7-512d-23dd-8d89-f6e2415024b5';
+    $PrintauthToken = $printToken;
     $FirstName = $_SESSION['UserDetails']['FirstName'];
     $Lastname = ' ' . $_SESSION['UserDetails']['Lastname'];
     $Address = $_SESSION['UserDetails']['Address'];
     $City = $_SESSION['UserDetails']['City'];
     $country ='US';
-    $phone = $_SESSION['UserDetails']['Phone'];
+    $Phone = $_SESSION['UserDetails']['Phone'];
     $State = $_SESSION['UserDetails']['State'];
     $zip = $_SESSION['UserDetails']['Zip'];
     $Email = $_SESSION['UserDetails']['Email'];
-    // $Clover_url="https://scl-sandbox.dev.clover.com";//https://scl.clover.com old
-    $Clover_url="https://sandbox.dev.clover.com";
+    $Clover_url="https://scl-sandbox.dev.clover.com";//https://scl.clover.com old
+    // $Clover_url="https://sandbox.dev.clover.com";
 
     $TipAmount = 4;
     $TaxAmount = 7;
@@ -89,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'description' => $_SESSION['cart'][$i]['productname'],
                 'inventory_id' => $_SESSION['cart'][$i]['productid'],
                 'quantity' => (int)$_SESSION['cart'][$i]['productqty'],
-                'tax_rates' => [$Taxinfo]
+                // 'tax_rates' => [$Taxinfo]
             ];
             array_push($totalProducts, $Product);
         }
@@ -105,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'state' => $State
             ],
             'name' => $FirstName . ' ' . $Lastname,
-            'phone' =>  $phone
+            'phone' =>  $Phone
         ],
         'currency' => 'USD',
         'email' => $Email,
@@ -115,7 +115,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     $jsonBody = json_encode($body);
     curl_setopt_array($curl, array(
-        CURLOPT_URL => 'https://sandbox.dev.clover.com/v3/merchants/'.$merchantID.'/orders',
+        // CURLOPT_URL => 'https://sandbox.dev.clover.com/v3/merchants/'.$merchantID.'/orders',
+        CURLOPT_URL => $Clover_url."/v1/orders",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_ENCODING => '',
         CURLOPT_MAXREDIRS => 10,
@@ -150,7 +151,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       
       // Set cURL options using the correct cURL handle ($ch2)
       curl_setopt_array($ch2, array(
-          CURLOPT_URL => "https://scl-sandbox.dev.clover.com/v1/orders/" . $OrderID . "/pay",
+        //   CURLOPT_URL => "https://scl-sandbox.dev.clover.com/v1/orders/" . $OrderID . "/pay",
+          CURLOPT_URL =>  $Clover_url."/v1/orders/".$OrderID."/pay",
           CURLOPT_RETURNTRANSFER => true,
           CURLOPT_CUSTOMREQUEST => "POST",
           CURLOPT_POSTFIELDS => $paymentjsonBody,

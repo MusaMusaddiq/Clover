@@ -360,7 +360,7 @@ $total = $grandTotal + $tax + $tip;
 
                             let formData = new FormData(form);
                             debugger;
-                            fetch('clover-charge.php', {
+                            fetch('clover-charge2.php', {
                                 method: 'POST',
                                 body: formData
                             })
