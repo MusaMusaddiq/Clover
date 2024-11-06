@@ -144,7 +144,7 @@ function generate_uuid_v4() {
     $totalcents = round($dollars * 100);
 
     // $cents = ($taxcents + $totalcents);
-    $cents = $totalcents + $taxamount;
+    $cents = $totalcents + $taxcents;
 
 
 
