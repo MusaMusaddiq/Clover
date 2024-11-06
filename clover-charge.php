@@ -140,7 +140,7 @@ function generate_uuid_v4() {
 
     $dollars = $PayableAmount; 
     $taxamount = ($PayableAmount*$taxPer/100);
-    // $taxcents = round($taxamount*100);
+    $taxcents = round($taxamount*100);
     $totalcents = round($dollars * 100);
 
     // $cents = ($taxcents + $totalcents);
