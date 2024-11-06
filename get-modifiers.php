@@ -9,7 +9,8 @@ if (isset($_GET['productId'])) {
     $bearerToken = $token;
 
     // 1st API Call to get the modifier groups for the item
-    $url = "https://sandbox.dev.clover.com/v3/merchants/$mId/items/$productId?expand=modifierGroups";
+    // $url = "https://sandbox.dev.clover.com/v3/merchants/$mId/items/$productId?expand=modifierGroups";
+    $url = "{$cloverApiEndPoint}{$mId}/items/{$productId}?expand=modifierGroups";
 
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -28,7 +29,8 @@ if (isset($_GET['productId'])) {
         $modifierGroupId = $data['modifierGroups']['elements'][0]['id'];
 
         // 2nd API call to get modifiers for the modifier group
-        $modifierUrl = "https://apisandbox.dev.clover.com/v3/merchants/$mId/modifier_groups/$modifierGroupId/modifiers";
+        $modifierUrl = "{$cloverApiEndPoint}{$mId}/modifier_groups/{$modifierGroupId}/modifiers";
+        // $modifierUrl = "https://apisandbox.dev.clover.com/v3/merchants/$mId/modifier_groups/$modifierGroupId/modifiers";
 
         $ch = curl_init($modifierUrl);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

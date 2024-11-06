@@ -1,21 +1,53 @@
 <?php 
+
 session_start();
+require_once('vendor/autoload.php');
+require ('connections.php');
+
+$client = new \GuzzleHttp\Client();
+
+// fetch taxes
+$response = $client->request('GET', "{$cloverApiEndPoint}{$merchantID}/tax_rates", [
+	'headers' => [
+	  'accept' => 'application/json',
+	  'authorization' => 'Bearer ' . $token,
+	],
+]);
+
+$data = json_decode($response->getBody(), true);
+
+$defaultTaxRate = array_filter($data['elements'], function ($element) {
+    return $element['isDefault'] === true;
+});
+
+if (!empty($defaultTaxRate)) {
+    $defaultTaxRate = array_values($defaultTaxRate)[0]; // Get the first matching element
+    $name = $defaultTaxRate['name'];
+    $rate = $defaultTaxRate['rate'];
+    $_SESSION['taxname'] = $name;
+    $_SESSION['taxrate'] = $rate;
+} else {
+    $_SESSION['taxname'] = "";
+    $_SESSION['taxrate'] = 0;
+}
+
 $grandTotal = 0;
 $tax = 0;
-$taxpercentage = 7;
-$tip = 7;
-
+$taxpercentage = 0;
+$tip = 0;
 
 if(isset($_SESSION['cart']) &&  count($_SESSION['cart']) > 0){
     foreach($_SESSION['cart'] as $item){
         $itemTotal = $item['producttotal']; 
         $grandTotal += $itemTotal;
-        $tax += ($itemTotal*$taxpercentage)/(100);
+        // $tax += $itemTotal;
+        // $tax += ($itemTotal*$taxpercentage)/(100);
     } 
 } 
 
+$rate = ($_SESSION['taxrate']/100000);
+$tax = ($grandTotal*($rate/100));
 $total = $grandTotal + $tax + $tip;
-
 
 ?>
 

@@ -1,21 +1,53 @@
 <?php 
+
 session_start();
+require_once('vendor/autoload.php');
+require ('connections.php');
+
+$client = new \GuzzleHttp\Client();
+
+// fetch taxes
+$response = $client->request('GET', "{$cloverApiEndPoint}{$merchantID}/tax_rates", [
+	'headers' => [
+	  'accept' => 'application/json',
+	  'authorization' => 'Bearer ' . $token,
+	],
+]);
+
+$data = json_decode($response->getBody(), true);
+
+$defaultTaxRate = array_filter($data['elements'], function ($element) {
+    return $element['isDefault'] === true;
+});
+
+if (!empty($defaultTaxRate)) {
+    $defaultTaxRate = array_values($defaultTaxRate)[0]; // Get the first matching element
+    $name = $defaultTaxRate['name'];
+    $rate = $defaultTaxRate['rate'];
+    $_SESSION['taxname'] = $name;
+    $_SESSION['taxrate'] = $rate;
+} else {
+    $_SESSION['taxname'] = "";
+    $_SESSION['taxrate'] = 0;
+}
+
 $grandTotal = 0;
 $tax = 0;
-$taxpercentage = 7;
-$tip = 7;
-
+$taxpercentage = 0;
+$tip = 0;
 
 if(isset($_SESSION['cart']) &&  count($_SESSION['cart']) > 0){
     foreach($_SESSION['cart'] as $item){
         $itemTotal = $item['producttotal']; 
         $grandTotal += $itemTotal;
-        $tax += ($itemTotal*$taxpercentage)/(100);
+        // $tax += $itemTotal;
+        // $tax += ($itemTotal*$taxpercentage)/(100);
     } 
 } 
 
+$rate = ($_SESSION['taxrate']/100000);
+$tax = ($grandTotal*($rate/100));
 $total = $grandTotal + $tax + $tip;
-
 
 ?>
 
@@ -212,7 +244,7 @@ $total = $grandTotal + $tax + $tip;
     <div class="container pb-5">
         <div class="row g-4">
 
-        <a href="test.php"><button class="btn btn-primary">test</button></a>
+        <!-- <a href="test.php"><button class="btn btn-primary">test</button></a> -->
 
             <?php include('order-details.php'); ?>
 
@@ -357,17 +389,18 @@ $total = $grandTotal + $tax + $tip;
                             hiddenInput.setAttribute('name', 'cloverToken');
                             hiddenInput.setAttribute('value', result.token);
                             form.appendChild(hiddenInput);
-
+                            console.log('result.token', result.token);
                             let formData = new FormData(form);
                             debugger;
-                            fetch('clover-charge2.php', {
+                            fetch('clover-charge.php', {
                                 method: 'POST',
                                 body: formData
                             })
                                 .then(response => response.json())
                                 .then(data => {
                                     debugger;
-                                    if (data.status == "paid") {
+                                    console.log('data',data);
+                                    if (data.status == "paid" || data.status == "created") {
                                         window.location.href = 'order-mail.php';
                                     } else {
                                         alert('Invalid details');
@@ -387,8 +420,10 @@ $total = $grandTotal + $tax + $tip;
                 });
         });
 
-        let total = parseFloat("<?php echo $total; ?>");
-        let paymentAmount = (parseFloat(total.toFixed(2)) * 100).toFixed(0);
+        let dollars  = parseFloat("<?php echo $total; ?>");
+        const cents = Math.round(dollars * 100)
+        let paymentAmount = cents ;
+        console.log('paymentTotal',paymentAmount);
         debugger;
         const paymentReqData = {
             country: 'US',

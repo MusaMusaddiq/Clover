@@ -5,8 +5,9 @@ require ('connections.php');
 
 $client = new \GuzzleHttp\Client();
 
+
 // Fetch categories
-$response = $client->request('GET', 'https://sandbox.dev.clover.com/v3/merchants/'. $merchantID .'/categories', [
+$response = $client->request('GET', "{$cloverApiEndPoint}{$merchantID}/categories", [
     'headers' => [
         'accept' => 'application/json',
         'authorization' => 'Bearer ' . $token,
@@ -19,7 +20,7 @@ foreach ($menu_categories->elements as &$category) {
     $category_id = $category->id;
 
     // Fetch items for each category
-    $response = $client->request('GET', 'https://sandbox.dev.clover.com/v3/merchants/' . $merchantID . '/categories/' . $category_id . '/items', [
+    $response = $client->request('GET', "{$cloverApiEndPoint}{$merchantID}/categories/{$category_id}/items", [
         'headers' => [
             'accept' => 'application/json',
             'authorization' => 'Bearer ' . $token,
