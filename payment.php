@@ -17,8 +17,10 @@ $response = $client->request('GET', "{$cloverApiEndPoint}{$merchantID}/tax_rates
 $data = json_decode($response->getBody(), true);
 
 $defaultTaxRate = array_filter($data['elements'], function ($element) {
-    return $element['isDefault'] === true;
+    // return $element['isDefault'] === true;
+    return $element['rate'] > 0;
 });
+
 
 if (!empty($defaultTaxRate)) {
     $defaultTaxRate = array_values($defaultTaxRate)[0]; // Get the first matching element
@@ -30,7 +32,6 @@ if (!empty($defaultTaxRate)) {
     $_SESSION['taxname'] = "";
     $_SESSION['taxrate'] = 0;
 }
-
 $grandTotal = 0;
 $tax = 0;
 $taxpercentage = 0;
@@ -49,6 +50,9 @@ $rate = ($_SESSION['taxrate']/100000);
 $tax = ($grandTotal*($rate/100));
 $total = $grandTotal + $tax + $tip;
 
+$_SESSION['totalPayable'] = round($total * 100);
+
+// echo $_SESSION['totalPayable'];
 ?>
 
 <html lang="en">

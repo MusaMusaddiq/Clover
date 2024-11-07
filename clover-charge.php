@@ -12,7 +12,7 @@ $client = new \GuzzleHttp\Client();
 $response = '';
 $response1 = '';
 
-function get_client_ip() {
+function get_client_ip() { 
     if (!empty($_SERVER['HTTP_X_REAL_IP'])) {
         return $_SERVER['HTTP_X_REAL_IP'];
     } elseif (!empty($_SERVER['REMOTE_ADDR'])) {
@@ -78,10 +78,10 @@ function generate_uuid_v4() {
 
             $itemsTotal = $_SESSION['cart'][$i]['producttotal']; 
             $PayableAmount +=$itemsTotal;
-            // $Taxinfo = [
-            //     'name' => 'Clover order sales tax',
-            //     'rate' => (int)$taxPer
-            // ];
+            $Taxinfo = [
+                'name' => $_SESSION['taxname'],
+                'rate' => (int)$_SESSION['taxrate']
+            ];
             $Product = array(
                 'amount' => $Price,
                 'currency' => 'usd',
@@ -138,15 +138,14 @@ function generate_uuid_v4() {
 
 
 
-    $dollars = $PayableAmount; 
-    $taxamount = ($PayableAmount*$taxPer/100);
-    $taxcents = round($taxamount*100);
-    $totalcents = round($dollars * 100);
-
-    // $cents = ($taxcents + $totalcents);
-    $cents = $totalcents + $taxcents;
+    // $dollars = $PayableAmount; 
+    // $taxamount = ($PayableAmount*$taxPer/100);
+    // $taxcents = number_format($taxamount, 2); //round($taxamount*100);
+    // $totalcents = round($dollars * 100);
+    // $cents = $totalcents + $taxcents;
 
 
+    $payableAmount = $_SESSION['totalPayable'];
 
     $ch2 = curl_init();
     curl_setopt_array($ch2, [
@@ -160,7 +159,7 @@ function generate_uuid_v4() {
         CURLOPT_POSTFIELDS => json_encode([
             'ecomind' => 'ecom',
             'customer' => $CustomerID,
-            'amount' =>  $cents,
+            'amount' =>  $payableAmount,
             'currency' => 'usd',
             'source' => $payment_id,
             // 'tip_amount' => 20
@@ -176,31 +175,31 @@ function generate_uuid_v4() {
     ]);
 
     $response2 = curl_exec($ch2);
-    try {
-        $orderResult = json_decode($response2, TRUE);
-        if ($orderResult['status'] == "paid") {
-            $OrderPrintData = array(id => $OrderID);
-            $CreateCustomerOrderPrint = array(
-                orderRef => array($OrderPrintData)
-            );
-            $smartPrintData = array(event => 'PrintOrder', data => $OrderID);
-            $printch = curl_init("{$printApiEndPoint}{$MID}/print_event");
-            curl_setopt_array($printch, array(
-                CURLOPT_POST => TRUE,
-                CURLOPT_RETURNTRANSFER => TRUE,
-                CURLOPT_HTTPHEADER => array(
-                    'Authorization: Bearer ' . $PrintauthToken,
-                    'Content-Type: application/json'
-                ),
-                CURLOPT_POSTFIELDS => '{"orderRef":{"id":"' . $OrderID . '"}}'
-            ));
-            $responseprint = curl_exec($printch);
-            if ($responseprint === FALSE) {
-                echo '<script>console.log(' . curl_error($printch) . ');</script>';
-            }
-        }
-    } catch (Exception $e) {
-    }
+    // try {
+    //     $orderResult = json_decode($response2, TRUE);
+    //     if ($orderResult['status'] == "paid" || $orderResult['status'] == "created") {
+    //         $OrderPrintData = array(id => $OrderID);
+    //         $CreateCustomerOrderPrint = array(
+    //             orderRef => array($OrderPrintData)
+    //         );
+    //         $smartPrintData = array(event => 'PrintOrder', data => $OrderID);
+    //         $printch = curl_init("{$printApiEndPoint}{$MID}/print_event");
+    //         curl_setopt_array($printch, array(
+    //             CURLOPT_POST => TRUE,
+    //             CURLOPT_RETURNTRANSFER => TRUE,
+    //             CURLOPT_HTTPHEADER => array(
+    //                 'Authorization: Bearer ' . $PrintauthToken,
+    //                 'Content-Type: application/json'
+    //             ),
+    //             CURLOPT_POSTFIELDS => '{"orderRef":{"id":"' . $OrderID . '"}}'
+    //         ));
+    //         $responseprint = curl_exec($printch);
+    //         if ($responseprint === FALSE) {
+    //             echo '<script>console.log(' . curl_error($printch) . ');</script>';
+    //         }
+    //     }
+    // } catch (Exception $e) {
+    // }
 
     echo $response2;
     // echo  $OrderID;
