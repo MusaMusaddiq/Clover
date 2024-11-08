@@ -46,11 +46,12 @@ if(isset($_SESSION['cart']) &&  count($_SESSION['cart']) > 0){
     } 
 } 
 
-$rate = ($_SESSION['taxrate']/100000);
-$tax = ($grandTotal*($rate/100));
-$total = $grandTotal + $tax + $tip;
 
-$_SESSION['totalPayable'] = round($total * 100);
+$rate = ($_SESSION['taxrate']/100000);
+$tax = (($grandTotal*100)*($rate/100));
+$total = ($grandTotal*100) + $tax + $tip;
+
+$_SESSION['totalPayable'] = $total;
 
 // echo $_SESSION['totalPayable'];
 ?>
@@ -248,7 +249,7 @@ $_SESSION['totalPayable'] = round($total * 100);
     <div class="container pb-5">
         <div class="row g-4">
 
-        <!-- <a href="test.php"><button class="btn btn-primary">test</button></a> -->
+        <a href="clover-charge.php"><button class="btn btn-primary">test</button></a>
 
             <?php include('order-details.php'); ?>
 
@@ -425,7 +426,7 @@ $_SESSION['totalPayable'] = round($total * 100);
         });
 
         let dollars  = parseFloat("<?php echo $total; ?>");
-        const cents = Math.round(dollars * 100)
+         const cents = Math.round(dollars )
         let paymentAmount = cents ;
         console.log('paymentTotal',paymentAmount);
         debugger;

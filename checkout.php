@@ -17,7 +17,8 @@ $response = $client->request('GET', "{$cloverApiEndPoint}{$merchantID}/tax_rates
 $data = json_decode($response->getBody(), true);
 
 $defaultTaxRate = array_filter($data['elements'], function ($element) {
-    return $element['isDefault'] === true;
+     // return $element['isDefault'] === true;
+     return $element['rate'] > 0;
 });
 
 if (!empty($defaultTaxRate)) {
@@ -45,10 +46,14 @@ if(isset($_SESSION['cart']) &&  count($_SESSION['cart']) > 0){
     } 
 } 
 
-$rate = ($_SESSION['taxrate']/100000);
-$tax = ($grandTotal*($rate/100));
-$total = $grandTotal + $tax + $tip;
 
+
+$rate = ($_SESSION['taxrate']/100000);
+$tax = (($grandTotal*100)*($rate/100));
+$total = ($grandTotal*100) + $tax + $tip;
+
+// echo $total;
+// echo $grandTotal;
 ?>
 
 <html lang="en">

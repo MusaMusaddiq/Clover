@@ -12,6 +12,9 @@ $client = new \GuzzleHttp\Client();
 $response = '';
 $response1 = '';
 
+
+// echo 1;
+
 function get_client_ip() { 
     if (!empty($_SERVER['HTTP_X_REAL_IP'])) {
         return $_SERVER['HTTP_X_REAL_IP'];
@@ -65,36 +68,50 @@ function generate_uuid_v4() {
     $itemsTotal = 0;
     $PayableAmount = 0;
 
-    $taxPer = isset($_SESSION['taxrate']) && $_SESSION['taxrate'] > 0 ? $_SESSION['taxrate'] / 100000 : 0;
+    // $taxPer = isset($_SESSION['taxrate']) && $_SESSION['taxrate'] > 0 ? $_SESSION['taxrate'] / 100000 : 0;
+    $taxPer=700000;
 
+    // echo  2;
 
-
+    // print_r($_SESSION['cart']);
     if (!empty($_SESSION['cart']) && count($_SESSION['cart']) >= 1) {
-        for ($i = 0; $i <= count($_SESSION['cart']); $i++) {
+        for ($i = 0; $i < count($_SESSION['cart']); $i++) {
             $priceInCents = str_replace('$', '', $_SESSION['cart'][$i]['productprice']);
-            $Price = intval(floatval($priceInCents) * 100);
+            // $Price = intval(floatval($priceInCents) * 100);
+            // $Price=$_SESSION['cart'][$i]['productprice'];
+            $Price = $priceInCents;
             $Qty = $_SESSION['cart'][$i]['productqty'];
             $TotalPrice = $Qty * $Price;
 
-            $itemsTotal = $_SESSION['cart'][$i]['producttotal']; 
-            $PayableAmount +=$itemsTotal;
-            $Taxinfo = [
-                'name' => $_SESSION['taxname'],
-                'rate' => (int)$_SESSION['taxrate']
-            ];
+            //echo  $Qty . '-' . $Price;
+            //exit();
+            // $itemsTotal = $_SESSION['cart'][$i]['producttotal']; 
+            // $PayableAmount +=$itemsTotal;
+            // $Taxinfo = [
+            //     'name' => $_SESSION['taxname'],
+            //     'rate' => (int)$_SESSION['taxrate']
+            // ];
+            $Taxinfo=array('name' =>'Clover Tax','rate'=>(int)($taxPer));
             $Product = array(
-                'amount' => $Price,
+                'amount' => (float)$Price,
                 'currency' => 'usd',
                 'description' => $_SESSION['cart'][$i]['productname'],
                 'inventory_id' => $_SESSION['cart'][$i]['productid'],
-                'quantity' =>  $Qty
+                'quantity' =>  $Qty,
+                'tax_rates'=>[$Taxinfo]
             );
+
+            
+            //   print_r($Product);
+          
             // array_push($totalProducts, $Product);
-            $totalProducts[] = $Product;
+                $totalProducts[] = $Product;
         }
     }
 
 
+    // print_r($totalProducts);
+    // exit();
     
 
     curl_setopt_array($curl, [
@@ -129,6 +146,9 @@ function generate_uuid_v4() {
     ]);
 
     $response = curl_exec($curl);
+
+    // echo $response;
+    // exit();
     
     if ($response === FALSE) {
         die(curl_error($ch1));
@@ -145,8 +165,11 @@ function generate_uuid_v4() {
     // $cents = $totalcents + $taxcents;
 
 
-    $payableAmount = $_SESSION['totalPayable'];
-
+    // $payableAmount = (round(($_SESSION['totalPayable']),2))*100;
+    
+    $payableAmount =round( $_SESSION['totalPayable']);
+// echo $payableAmount;
+// exit();
     $ch2 = curl_init();
     curl_setopt_array($ch2, [
         CURLOPT_URL => "{$Clover_url}/v1/orders/{$OrderID}/pay",
