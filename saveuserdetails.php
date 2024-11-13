@@ -1,9 +1,9 @@
 <?php 
     session_start();
+    require ('connections.php');
+    $client = new \GuzzleHttp\Client();
 
     if(isset($_POST['SaveUserdetails'])){
-
-
         $userdetails = [
             'FirstName' =>  !empty($_POST['FirstName']) ? $_POST['FirstName'] : '',
             'Lastname' =>  !empty($_POST['Lastname']) ? $_POST['Lastname'] : '',
@@ -15,9 +15,39 @@
             'Zip' =>  !empty($_POST['Zip']) ? $_POST['Zip'] : '',
             'ordernotes' =>  !empty($_POST['ordernotes']) ? $_POST['ordernotes'] : ''
         ];
-
         $_SESSION['UserDetails'] = $userdetails;
     }
+        
+    $response = $client->request('POST', "{$cloverApiEndPoint}{$merchantID}/customers", [
+        'body' => json_encode([
+            "firstName" => $_POST['FirstName'],
+            "lastName" => $_POST['Lastname'],
+            "emailAddresses" => [
+                ["emailAddress" => $_POST['Email']]
+            ],
+            "phoneNumbers" => [
+                ["phoneNumber" => $_POST['Phone']]
+            ],
+            "addresses" => [
+                [
+                    "address1" => $_POST['Address'],
+                    "address2" => "",
+                    "address3" => "",
+                    "city" => $_POST['City'],
+                    "country" => "us",
+                    "state" => $_POST['State'],
+                    "zip" => $_POST['Zip']
+                ]
+            ]
+        ]),
+        'headers' => [
+            'accept' => 'application/json',
+            'content-type' => 'application/json',
+        ],
+    ]);
+    
+
+    $customerdata = json_decode($response->getBody());
 
     header("Location:payment.php"); 
     // header("Location:clover-charge.php"); 
