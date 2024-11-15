@@ -31,15 +31,15 @@
                         </div>
                         <div class="d-flex align-items-center justify-content-between border-bottom py-3">
                             <h6 class="fw-bold mb-0">Tax 7% </h6>
-                            <p class="fw-bold mb-0">$<?php echo htmlspecialchars(number_format($tax, 2)); ?></p>
+                            <p class="fw-bold mb-0">$<?php echo htmlspecialchars(number_format($tax/100, 2)); ?></p>
                         </div>
                         <div class="d-flex align-items-center justify-content-between border-bottom py-3">
                             <h6 class="fw-bold mb-0">Tip </h6>
-                            <p class="fw-bold mb-0">$0</p>
+                            <p class="fw-bold mb-0">$<?php echo htmlspecialchars(number_format($tip/100, 2)); ?></p>
                         </div>
                         <div class="d-flex align-items-center justify-content-between py-3">
                             <h5 class="fw-bold mb-0 text-purple">Total </h5>
-                            <p class="fw-bold mb-0 h5 text-purple">$<?php echo htmlspecialchars(number_format($total, 2)); ?></p>
+                            <p class="fw-bold mb-0 h5 text-purple">$<?php echo htmlspecialchars(number_format($total/100, 2)); ?></p>
                         </div>                       
                     </div>
                 </div>

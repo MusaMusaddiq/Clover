@@ -35,6 +35,7 @@ if (!empty($defaultTaxRate)) {
 $grandTotal = 0;
 $tax = 0;
 $taxpercentage = 0;
+// $tip = $_SESSION['tip']*100;
 $tip = 0;
 
 if(isset($_SESSION['cart']) &&  count($_SESSION['cart']) > 0){
@@ -249,7 +250,7 @@ $_SESSION['totalPayable'] = $total;
     <div class="container pb-5">
         <div class="row g-4">
 
-        <a href="clover-charge.php"><button class="btn btn-primary">test</button></a>
+        <a href="tests.php"><button class="btn btn-primary">test</button></a>
 
             <?php include('order-details.php'); ?>
 

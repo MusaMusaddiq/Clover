@@ -8,14 +8,9 @@ header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
 require_once('vendor/autoload.php');
 require('connections.php');
 $client = new \GuzzleHttp\Client();
-
 $response = '';
 $response1 = '';
 
-
-
-
-// echo 1;
 
 function get_client_ip() { 
     if (!empty($_SERVER['HTTP_X_REAL_IP'])) {
@@ -55,44 +50,30 @@ function generate_uuid_v4() {
     $State = $_SESSION['UserDetails']['State'];
     $Zip = $_SESSION['UserDetails']['Zip'];
     $Email = $_SESSION['UserDetails']['Email'];
+
+
+    // $CustomerID = $_SESSION['CustomerId'];
     $Clover_url = $orderApiEndPoint;
-    $TipAmount = 4;
-    $TaxAmount = 7;
+    $TipAmount = $_SESSION['tip']*100;
+
     $MID = $merchantID;
-    $TotalWithTip = 200;
-    $TotalWithoutTip = ($TotalWithTip - $TipAmount);
-    $paymentAmount = (round(($TotalWithoutTip), 2)) * 100;
-    $TotalAmount = $paymentAmount;
+    
     
 
     $curl = curl_init();
     $totalProducts = array();
     $itemsTotal = 0;
     $PayableAmount = 0;
-
-    // $taxPer = isset($_SESSION['taxrate']) && $_SESSION['taxrate'] > 0 ? $_SESSION['taxrate'] / 100000 : 0;
     $taxPer=700000;
 
-    // echo  2;
-
-    // print_r($_SESSION['cart']);
     if (!empty($_SESSION['cart']) && count($_SESSION['cart']) >= 1) {
         for ($i = 0; $i < count($_SESSION['cart']); $i++) {
             $priceInCents = str_replace('$', '', $_SESSION['cart'][$i]['productprice']);
-            // $Price = intval(floatval($priceInCents) * 100);
-            // $Price=$_SESSION['cart'][$i]['productprice'];
+            
             $Price = $priceInCents;
             $Qty = $_SESSION['cart'][$i]['productqty'];
             $TotalPrice = $Qty * $Price;
 
-            //echo  $Qty . '-' . $Price;
-            //exit();
-            // $itemsTotal = $_SESSION['cart'][$i]['producttotal']; 
-            // $PayableAmount +=$itemsTotal;
-            // $Taxinfo = [
-            //     'name' => $_SESSION['taxname'],
-            //     'rate' => (int)$_SESSION['taxrate']
-            // ];
             $Taxinfo=array('name' =>'Clover Tax','rate'=>(int)($taxPer));
             $Product = array(
                 'amount' => (float)$Price,
@@ -103,18 +84,9 @@ function generate_uuid_v4() {
                 'tax_rates'=>[$Taxinfo]
             );
 
-            
-            //   print_r($Product);
-          
-            // array_push($totalProducts, $Product);
-                $totalProducts[] = $Product;
+            $totalProducts[] = $Product;
         }
     }
-
-
-    // print_r($totalProducts);
-    // exit();
-    
 
     curl_setopt_array($curl, [
         CURLOPT_URL => $Clover_url . "/v1/orders",
@@ -149,29 +121,15 @@ function generate_uuid_v4() {
 
     $response = curl_exec($curl);
 
-    // echo $response;
-    // exit();
-    
     if ($response === FALSE) {
         die(curl_error($ch1));
     }
     $responseData = json_decode($response, TRUE);
     $OrderID = $responseData['id'];
 
-
-
-    // $dollars = $PayableAmount; 
-    // $taxamount = ($PayableAmount*$taxPer/100);
-    // $taxcents = number_format($taxamount, 2); //round($taxamount*100);
-    // $totalcents = round($dollars * 100);
-    // $cents = $totalcents + $taxcents;
-
-
-    // $payableAmount = (round(($_SESSION['totalPayable']),2))*100;
     
-    $payableAmount =round( $_SESSION['totalPayable']);
-// echo $payableAmount;
-// exit();
+    $payableAmount = round($_SESSION['totalPayable']) ;
+
     $ch2 = curl_init();
     curl_setopt_array($ch2, [
         CURLOPT_URL => "{$Clover_url}/v1/orders/{$OrderID}/pay",
@@ -188,7 +146,7 @@ function generate_uuid_v4() {
             'currency' => 'usd',
             'source' => $payment_id,
             // 'tip_amount' => 20
-            // 'tip_amount' => ((int)($TipAmount * 100))
+            // 'tip_amount' => ((int)($TipAmount))
         ]),
         CURLOPT_HTTPHEADER => [
             "accept: application/json",
@@ -200,6 +158,7 @@ function generate_uuid_v4() {
     ]);
 
     $response2 = curl_exec($ch2);
+    $_SESSION['order_details'] = $response2;
     // try {
     //     $orderResult = json_decode($response2, TRUE);
     //     if ($orderResult['status'] == "paid" || $orderResult['status'] == "created") {

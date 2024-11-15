@@ -1,6 +1,7 @@
 <?php 
     session_start();
     require ('connections.php');
+    require_once('vendor/autoload.php');
     $client = new \GuzzleHttp\Client();
 
     if(isset($_POST['SaveUserdetails'])){
@@ -42,13 +43,12 @@
         ]),
         'headers' => [
             'accept' => 'application/json',
-            'content-type' => 'application/json',
+            'authorization' => 'Bearer ' . $token,
         ],
     ]);
     
 
     $customerdata = json_decode($response->getBody());
-
+    $_SESSION['CustomerId'] = $customerdata->id;
     header("Location:payment.php"); 
-    // header("Location:clover-charge.php"); 
 ?>

@@ -35,7 +35,7 @@ if (!empty($defaultTaxRate)) {
 $grandTotal = 0;
 $tax = 0;
 $taxpercentage = 0;
-$tip = 0;
+$tip = $_SESSION['tip']*100;
 
 if(isset($_SESSION['cart']) &&  count($_SESSION['cart']) > 0){
     foreach($_SESSION['cart'] as $item){
