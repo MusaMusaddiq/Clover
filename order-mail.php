@@ -6,7 +6,7 @@ $order_details = json_decode($_SESSION['order_details']);
 
 $Email = $_SESSION['UserDetails']['Email'];
 $subject = "Your Order " . $order_details->id ."";
-
+$order_id = $order_details->id;
 $PickupDateTime = "";
 $PickupLocation = "";
 
@@ -37,6 +37,11 @@ $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
 $abc= substr($_SESSION['UserDetails']['FirstName'],0,8);
 $headers .= 'From: '.$Email.  "\r\n";
 mail($to, $subject, $message, $headers);
-header("Location:../thank-you.php"); 
 
+$_SESSION['UserDetails'] = "";
+$_SESSION['cart'] = "";
+$_SESSION['order_details'] = "";
+
+header("Location: thank-you.php?orderid=" . $order_id);
+exit();
 ?>

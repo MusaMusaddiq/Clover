@@ -54,7 +54,8 @@ function generate_uuid_v4() {
 
     // $CustomerID = $_SESSION['CustomerId'];
     $Clover_url = $orderApiEndPoint;
-    $TipAmount = $_SESSION['tip']*100;
+    $TipAmount = $_SESSION['tip'];
+    // $TipAmount = $_SESSION['tip']*100;
 
     $MID = $merchantID;
     
@@ -70,6 +71,8 @@ function generate_uuid_v4() {
         for ($i = 0; $i < count($_SESSION['cart']); $i++) {
             $priceInCents = str_replace('$', '', $_SESSION['cart'][$i]['productprice']);
             
+           
+
             $Price = $priceInCents;
             $Qty = $_SESSION['cart'][$i]['productqty'];
             $TotalPrice = $Qty * $Price;
@@ -78,7 +81,7 @@ function generate_uuid_v4() {
             $Product = array(
                 'amount' => (float)$Price,
                 'currency' => 'usd',
-                'description' => $_SESSION['cart'][$i]['productname'],
+                'description' => $_SESSION['cart'][$i]['productname'] . ($_SESSION['cart'][$i]['modifiername'] !== 'No Addon' ? ' Addon: ' . $_SESSION['cart'][$i]['modifiername'] : ''),
                 'inventory_id' => $_SESSION['cart'][$i]['productid'],
                 'quantity' =>  $Qty,
                 'tax_rates'=>[$Taxinfo]
@@ -128,7 +131,7 @@ function generate_uuid_v4() {
     $OrderID = $responseData['id'];
 
     
-    $payableAmount = round($_SESSION['totalPayable']) ;
+    $payableAmount = round($_SESSION['totalPayable'] - ($_SESSION['tip']*100)) ;
 
     $ch2 = curl_init();
     curl_setopt_array($ch2, [
@@ -146,7 +149,7 @@ function generate_uuid_v4() {
             'currency' => 'usd',
             'source' => $payment_id,
             // 'tip_amount' => 20
-            // 'tip_amount' => ((int)($TipAmount))
+            'tip_amount' => ((int)($TipAmount*100))
         ]),
         CURLOPT_HTTPHEADER => [
             "accept: application/json",

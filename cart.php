@@ -170,17 +170,38 @@ if(isset($_SESSION['tip']) && ($_SESSION['tip']) > 0){
                             <div class="col-md-12 text-center">
                                 <p>We appreciate your tips for our staff.</p>
                             </div>
-                            <div class="col-md-3"><a href="add-tip.php?tip_amount=<?php echo htmlspecialchars(number_format(($grandTotal*10/100), 2));?>"><button class="btn btn-light w-100" style="background: #ebebeb;"><b>10%</b> <br> <span>$<?php echo htmlspecialchars(number_format(($grandTotal*10/100), 2));?></span></button></a></div>
-                            <div class="col-md-3"><a href="add-tip.php?tip_amount=<?php echo htmlspecialchars(number_format(($grandTotal*20/100), 2));?>"><button class="btn btn-light w-100" style="background: #ebebeb;"><b>20%</b> <br> <span>$<?php echo htmlspecialchars(number_format(($grandTotal*20/100), 2));?></span></button></a></div>
-                            <div class="col-md-3"><a href="add-tip.php?tip_amount=<?php echo htmlspecialchars(number_format(($grandTotal*30/100), 2));?>"><button class="btn btn-light w-100" style="background: #ebebeb;"><b>30%</b> <br> <span>$<?php echo htmlspecialchars(number_format(($grandTotal*30/100), 2));?></span></button></a></div>
-                            <div class="col-md-3"><button class="btn btn-light w-100" style="background: #ebebeb;height: 100%;font-size: 12px;"><span>Custom</span></button></div>
+                            <div class="col-md-3">
+                                <a href="add-tip.php?tip_amount=<?php echo htmlspecialchars(number_format(($grandTotal*10/100), 2));?>">
+                                    <button class="<?php echo $_SESSION['tip'] ==  htmlspecialchars(number_format(($grandTotal*10/100), 2)) ? 'btn btn-success w-100' : 'btn btn-light w-100' ?>" style="background: #ebebeb;"><b>10%</b> <br> 
+                                        <span>$<?php echo htmlspecialchars(number_format(($grandTotal*10/100), 2));?></span>
+                                    </button>
+                                </a>
+                            </div>
+                            <div class="col-md-3">
+                                <a href="add-tip.php?tip_amount=<?php echo htmlspecialchars(number_format(($grandTotal*20/100), 2));?>">
+                                    <button class="<?php echo $_SESSION['tip'] ==  htmlspecialchars(number_format(($grandTotal*20/100), 2)) ? 'btn btn-success w-100' : 'btn btn-light w-100' ?>"style="background: #ebebeb;"><b>20%</b> <br> 
+                                        <span>$<?php echo htmlspecialchars(number_format(($grandTotal*20/100), 2));?></span>
+                                    </button>
+                                </a>
+                            </div>
+                            <div class="col-md-3">
+                                <a href="add-tip.php?tip_amount=<?php echo htmlspecialchars(number_format(($grandTotal*30/100), 2));?>">
+                                    <button class="<?php echo $_SESSION['tip'] ==  htmlspecialchars(number_format(($grandTotal*30/100), 2)) ? 'btn btn-success w-100' : 'btn btn-light w-100' ?>" style="background: #ebebeb;"><b>30%</b> <br> 
+                                        <span>$<?php echo htmlspecialchars(number_format(($grandTotal*30/100), 2));?></span>
+                                    </button>
+                                </a>
+                            </div>
+                            <div class="col-md-3">
+                                <button class="btn btn-light w-100" style="background: #ebebeb;height: 100%;font-size: 12px;">
+                                    <span>Custom</span>
+                                </button>
+                            </div>
                         </div>
                         <a href="checkout.php" class="btn btn-purple px-3 py-3 w-100">Proceed to checkout </a>
                     </div>
                 </div>
               
-    <?php endif; ?>
-
+            <?php endif; ?>
 
             </div>
         </div>
