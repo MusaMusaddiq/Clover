@@ -155,52 +155,74 @@ if(isset($_SESSION['tip']) && ($_SESSION['tip']) > 0){
 
 
 <?php if (isset($_SESSION['cart']) && count($_SESSION['cart']) > 0): ?>
-                <div class="col-lg-4 col-12">
-                    <div class="border p-4 rounded-4">
-                        <h6 class="fw-bold pb-3">Cart total </h6>
-                        <div class="d-flex align-items-center justify-content-between border-bottom py-3">
-                            <h6 class="mb-0">Subtotal </h6>
-                            <p class="mb-0">$<?php echo $grandTotal ?> </p>
-                        </div>
-                        <div class="d-flex align-items-center justify-content-between py-3 fw-bold mb-4">
-                            <h5 class="mb-0 fw-bold">Total </h5>
-                            <p class="mb-0 h5 fw-bold">$<?php echo $grandTotal ?></p>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-12 text-center">
-                                <p>We appreciate your tips for our staff.</p>
-                            </div>
-                            <div class="col-md-3">
-                                <a href="add-tip.php?tip_amount=<?php echo htmlspecialchars(number_format(($grandTotal*10/100), 2));?>">
-                                    <button class="<?php echo $_SESSION['tip'] ==  htmlspecialchars(number_format(($grandTotal*10/100), 2)) ? 'btn btn-success w-100' : 'btn btn-light w-100' ?>" style="background: #ebebeb;"><b>10%</b> <br> 
-                                        <span>$<?php echo htmlspecialchars(number_format(($grandTotal*10/100), 2));?></span>
-                                    </button>
-                                </a>
-                            </div>
-                            <div class="col-md-3">
-                                <a href="add-tip.php?tip_amount=<?php echo htmlspecialchars(number_format(($grandTotal*20/100), 2));?>">
-                                    <button class="<?php echo $_SESSION['tip'] ==  htmlspecialchars(number_format(($grandTotal*20/100), 2)) ? 'btn btn-success w-100' : 'btn btn-light w-100' ?>"style="background: #ebebeb;"><b>20%</b> <br> 
-                                        <span>$<?php echo htmlspecialchars(number_format(($grandTotal*20/100), 2));?></span>
-                                    </button>
-                                </a>
-                            </div>
-                            <div class="col-md-3">
-                                <a href="add-tip.php?tip_amount=<?php echo htmlspecialchars(number_format(($grandTotal*30/100), 2));?>">
-                                    <button class="<?php echo $_SESSION['tip'] ==  htmlspecialchars(number_format(($grandTotal*30/100), 2)) ? 'btn btn-success w-100' : 'btn btn-light w-100' ?>" style="background: #ebebeb;"><b>30%</b> <br> 
-                                        <span>$<?php echo htmlspecialchars(number_format(($grandTotal*30/100), 2));?></span>
-                                    </button>
-                                </a>
-                            </div>
-                            <div class="col-md-3">
-                                <button class="btn btn-light w-100" style="background: #ebebeb;height: 100%;font-size: 12px;">
-                                    <span>Custom</span>
-                                </button>
-                            </div>
-                        </div>
-                        <a href="checkout.php" class="btn btn-purple px-3 py-3 w-100">Proceed to checkout </a>
-                    </div>
+
+    <div class="col-lg-4 col-12">
+    <form action="add-tip.php" method="POST" id="addTip">
+
+        <div class="border p-4 rounded-4">
+            <h6 class="fw-bold pb-3">Cart total</h6>
+            <div class="d-flex align-items-center justify-content-between border-bottom py-3">
+                <h6 class="mb-0">Subtotal</h6>
+                <p class="mb-0">$<?php echo $grandTotal; ?></p>
+            </div>
+            <div class="d-flex align-items-center justify-content-between py-3 fw-bold mb-4">
+                <h5 class="mb-0 fw-bold">Total</h5>
+                <p class="mb-0 h5 fw-bold">$<?php echo $grandTotal; ?></p>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-12 text-center">
+                    <p>We appreciate your tips for our staff.</p>
                 </div>
-              
+                <div class="col-md-3">
+                    <a href="add-tip.php?tip_amount=<?php echo htmlspecialchars(number_format(($grandTotal * 10 / 100), 2)); ?>">
+                        <button type="button" id="customButton1" class="<?php echo $_SESSION['tip'] == htmlspecialchars(number_format(($grandTotal * 10 / 100), 2)) ? 'btn btn-success w-100' : 'btn btn-light w-100'; ?>" style="background: #ebebeb;">
+                            <b>10%</b><br>
+                            <span>$<?php echo htmlspecialchars(number_format(($grandTotal * 10 / 100), 2)); ?></span>
+                        </button>
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    <a href="add-tip.php?tip_amount=<?php echo htmlspecialchars(number_format(($grandTotal * 20 / 100), 2)); ?>">
+                        <button type="button" id="customButton2" class="<?php echo $_SESSION['tip'] == htmlspecialchars(number_format(($grandTotal * 20 / 100), 2)) ? 'btn btn-success w-100' : 'btn btn-light w-100'; ?>" style="background: #ebebeb;">
+                            <b>20%</b><br>
+                            <span>$<?php echo htmlspecialchars(number_format(($grandTotal * 20 / 100), 2)); ?></span>
+                        </button>
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    <a href="add-tip.php?tip_amount=<?php echo htmlspecialchars(number_format(($grandTotal * 30 / 100), 2)); ?>">
+                        <button type="button"  id="customButton3" class="<?php echo $_SESSION['tip'] == htmlspecialchars(number_format(($grandTotal * 30 / 100), 2)) ? 'btn btn-success w-100' : 'btn btn-light w-100'; ?>" style="background: #ebebeb;">
+                            <b>30%</b><br>
+                            <span>$<?php echo htmlspecialchars(number_format(($grandTotal * 30 / 100), 2)); ?></span>
+                        </button>
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    
+
+                <button type="button" 
+                id="customButton" 
+                    class="<?php 
+                        echo (!in_array($_SESSION['tip'], [
+                                htmlspecialchars(number_format(($grandTotal * 10 / 100), 2)),
+                                htmlspecialchars(number_format(($grandTotal * 20 / 100), 2)),
+                                htmlspecialchars(number_format(($grandTotal * 30 / 100), 2))
+                            ]) && $_SESSION['tip'] > 0) ? 'btn btn-success w-100' : 'btn btn-light w-100'; 
+                    ?>" 
+                    style="background: #ebebeb; height: 100%; font-size: 12px;">
+                    <span>Custom</span>
+                </button>
+                </div>
+                <div class="col-md-12 mt-3">
+                    <input type="text" id="currencyInput" name="custom_tip" value="<?php echo isset($_SESSION['tip']) ? $_SESSION['tip'] : ''; ?>" class="form-control" placeholder="$0.00" min="1">
+                </div>
+            </div>
+            <button type="submit" name="addTip" class="btn btn-purple px-3 py-3 w-100">Proceed to checkout</button>
+        </div>
+        </form>
+    </div>
+
+
             <?php endif; ?>
 
             </div>
@@ -209,6 +231,46 @@ if(isset($_SESSION['tip']) && ($_SESSION['tip']) > 0){
 
     <?php include('footer.php') ?>
     <?php include('sidenav.php') ?>
+
+    <script>
+        const customButton = document.getElementById('customButton');
+        const currencyInput = document.getElementById('currencyInput');
+
+        const customButton1 = document.getElementById('customButton1');
+        const customButton2 = document.getElementById('customButton2');
+        const customButton3 = document.getElementById('customButton3');
+        debugger;
+        customButton.addEventListener('click', function () {
+            customButton.classList.remove('btn-light');
+            customButton.classList.add('btn-success');
+
+            customButton1.classList.remove('btn-success');
+            customButton1.classList.add('btn-light');
+
+            customButton2.classList.remove('btn-success');
+            customButton2.classList.add('btn-light');
+
+            customButton3.classList.remove('btn-success');
+            customButton3.classList.add('btn-light');
+            currencyInput.value = '';
+            debugger;
+             // Make an AJAX request to update the session
+            fetch('add-tip.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: 'tip=0'
+            })
+            .then(response => response.text())
+            .then(data => {
+                debugger;
+                // window.location.reload();
+                customButton.classList.add('btn-success');
+                console.log('Session updated:', data); // Optional for debugging
+            })
+            .catch(error => console.error('Error updating session:', error));
+        });
+    </script>
+    
 
     <script src="vender/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="vender/jquery/jquery-3.6.4.min.js"></script>
