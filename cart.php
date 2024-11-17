@@ -132,12 +132,12 @@ if(isset($_SESSION['tip']) && ($_SESSION['tip']) > 0){
         </table>
 
         <!-- Show Apply Coupon form only if the cart has items -->
-        <div class="d-md-flex align-items-center justify-content-between">
+        <!-- <div class="d-md-flex align-items-center justify-content-between">
             <form class="d-flex gap-2 mb-2 mb-lg-0" role="search">
                 <input class="form-control" type="search" placeholder="Coupon Code" aria-label="Search">
                 <button class="btn btn-dark" type="submit">Apply</button>
             </form>
-        </div>
+        </div> -->
 
     <?php else: ?>
         <!-- Show this only if the cart is empty -->

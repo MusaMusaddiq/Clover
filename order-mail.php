@@ -39,8 +39,9 @@ $headers .= 'From: '.$Email.  "\r\n";
 mail($to, $subject, $message, $headers);
 
 $_SESSION['UserDetails'] = "";
-$_SESSION['cart'] = "";
+$_SESSION['cart'] = [];
 $_SESSION['order_details'] = "";
+$_SESSION['tip'] = 0;
 
 header("Location: thank-you.php?orderid=" . $order_id);
 exit();

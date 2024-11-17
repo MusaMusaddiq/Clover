@@ -76,8 +76,34 @@ $_SESSION['totalPayable'] = $total;
     <script src="https://checkout.sandbox.dev.clover.com/sdk.js"></script>
 
     <style>
-    /* shamsheer */
-    
+    .loader {
+        width: 20px;
+        height: 20px;
+        border: 3px solid #FFF;
+        border-bottom-color: transparent;
+        border-radius: 50%;
+        display: inline-block;
+        box-sizing: border-box;
+        animation: rotation 1s linear infinite;
+    }
+
+    @keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+    } 
+
+    #btn_1{
+
+    }
+
+    #btn_2{
+        display:none;
+    }
+
 .payment-container {
   background-color: #FFFFFF;
   /* border-top-left-radius: 15px;
@@ -292,7 +318,8 @@ $_SESSION['totalPayable'] = $total;
                     <!-- Testing -->
                     <div id="card-response" role="alert"></div>
                     <div class="button-container">
-                        <button>Submit Payment </button>
+                        <button id="btn_1"> Submit Payment </button>
+                        <button id="btn_2"> <span class="loader" style="margin-right:5px"></span> Payment Processing...</button>
                     </div>
                 </form>
                 </div>
@@ -372,7 +399,14 @@ $_SESSION['totalPayable'] = $total;
         const form = document.getElementById('payment-form');
         form.addEventListener('submit', function (event) {
             debugger;
-            document.getElementById('farpaysuc').innerHTML = "<img src='processing.gif' class='pro' id='farpaysuc'>";
+            // document.getElementById('farpaysuc').innerHTML = "<img src='processing.gif' class='pro' id='farpaysuc'>";
+
+            const btn_1 = document.getElementById('btn_1');
+            btn_1.style.display = "none";
+
+            const btn_2 = document.getElementById('btn_2');
+            btn_2.style.display = "block";
+
             event.preventDefault();
             clover.createToken()
                 .then(function (result) {

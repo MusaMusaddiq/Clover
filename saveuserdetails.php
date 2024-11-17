@@ -19,36 +19,36 @@
         $_SESSION['UserDetails'] = $userdetails;
     }
         
-    $response = $client->request('POST', "{$cloverApiEndPoint}{$merchantID}/customers", [
-        'body' => json_encode([
-            "firstName" => $_POST['FirstName'],
-            "lastName" => $_POST['Lastname'],
-            "emailAddresses" => [
-                ["emailAddress" => $_POST['Email']]
-            ],
-            "phoneNumbers" => [
-                ["phoneNumber" => $_POST['Phone']]
-            ],
-            "addresses" => [
-                [
-                    "address1" => $_POST['Address'],
-                    "address2" => "",
-                    "address3" => "",
-                    "city" => $_POST['City'],
-                    "country" => "us",
-                    "state" => $_POST['State'],
-                    "zip" => $_POST['Zip']
-                ]
-            ]
-        ]),
-        'headers' => [
-            'accept' => 'application/json',
-            'authorization' => 'Bearer ' . $token,
-        ],
-    ]);
+    // $response = $client->request('POST', "{$cloverApiEndPoint}{$merchantID}/customers", [
+    //     'body' => json_encode([
+    //         "firstName" => $_POST['FirstName'],
+    //         "lastName" => $_POST['Lastname'],
+    //         "emailAddresses" => [
+    //             ["emailAddress" => $_POST['Email']]
+    //         ],
+    //         "phoneNumbers" => [
+    //             ["phoneNumber" => $_POST['Phone']]
+    //         ],
+    //         "addresses" => [
+    //             [
+    //                 "address1" => $_POST['Address'],
+    //                 "address2" => "",
+    //                 "address3" => "",
+    //                 "city" => $_POST['City'],
+    //                 "country" => "us",
+    //                 "state" => $_POST['State'],
+    //                 "zip" => $_POST['Zip']
+    //             ]
+    //         ]
+    //     ]),
+    //     'headers' => [
+    //         'accept' => 'application/json',
+    //         'authorization' => 'Bearer ' . $token,
+    //     ],
+    // ]);
     
 
-    $customerdata = json_decode($response->getBody());
-    $_SESSION['CustomerId'] = $customerdata->id;
+    // $customerdata = json_decode($response->getBody());
+    // $_SESSION['CustomerId'] = $customerdata->id;
     header("Location:payment.php"); 
 ?>
