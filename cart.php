@@ -15,6 +15,8 @@ if(isset($_SESSION['tip']) && ($_SESSION['tip']) > 0){
     $_SESSION['tip'] = 0;
 }
 
+// print_r($_SESSION['cart']);
+
 ?>
 
 <html lang="en">

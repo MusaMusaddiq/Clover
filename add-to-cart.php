@@ -3,13 +3,13 @@ session_start();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['productid'])) {
     $productid = $_POST['productid'];
-    $productname = $_POST['productname'] ?? 'Unknown Product';
-    $productprice = $_POST['productprice'] ?? 0;
-    $productqty = $_POST['productqty'] ?? 1;
-    $modifierid = $_POST['modifierid'] ?? 0;
-    $modifiername = $_POST['modifiername'] ?? 'No Addon';
-    $modifierprice = $_POST['modifierprice'] ?? 0;
-    $producttotal = $_POST['producttotal'] ?? 0;
+    $productname = !empty($_POST['productname']) ? $_POST['productname'] : 'Unknown Product';
+    $productprice = !empty($_POST['productprice']) ? $_POST['productprice'] : 0;
+    $productqty = !empty($_POST['productqty']) ? $_POST['productqty'] : 1;
+    $modifierid = !empty($_POST['modifierid']) ? $_POST['modifierid'] : 0;
+    $modifiername = !empty($_POST['modifiername']) ? $_POST['modifiername'] : 'No Addon';
+    $modifierprice = !empty($_POST['modifierprice']) ? $_POST['modifierprice'] : 0;
+    $producttotal = !empty($_POST['producttotal']) ? $_POST['producttotal'] : 0;
 
     $product = [
         'productid' => $productid,

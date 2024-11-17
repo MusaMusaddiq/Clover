@@ -46,7 +46,7 @@
                 <div class="container">
                     <div class="row align-items-center justify-content-between">
                         <div class="col-auto">
-                            <p class="text-center m-0 text-white-50">Copyright © <a href="#" class="text-white">Website Name</a> 2025</p>
+                            <p class="text-center m-0 text-white-50">Copyright © <a href="#" class="text-white">Clover Online Order</a> 2024</p>
                         </div>
                         <div class="col-auto">
                             <div class="d-flex aling-items-center gap-4">

@@ -141,7 +141,8 @@ foreach ($menu_categories->elements as &$category) {
 	?>
 
 
-	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+		aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -196,69 +197,7 @@ foreach ($menu_categories->elements as &$category) {
 					<!-- <button type="button" class="btn btn-primary">Save changes</button> -->
 					<a class="btn btn-success btn-lg rounded-0 aos-init aos-animate" data-aos="fade-up" 
 						onclick="addToCart()"
-						data-aos-duration="600">
-						<span>Add<i class="ri-check-fill ms-2" ></i></span>
-					</a>
-				</div>
-			</div>
-		</div>
-	</div>
-
-
-	<div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModal1Label" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-						<h5 class="modal-title" id="exampleModal1Label">Pickup Details</h5>
-						<a data-bs-dismiss="modal" aria-label="Close">
-							<i class="ri-close-circle-line f-20 text-dark"></i>
-						</a>
-				</div>
-				<div class="modal-body">
-					<div class="row">
-						<div class="col-md-12">
-						<select class="form-select form-select-sm" name="timeset" id="timeset"  style="background: #f6f6f6;
-							margin-bottom: 5px;
-							width: 100%;
-							height: 42px;
-							border-radius: 4px;
-							padding: 7px;
-							color: black;border: none;">
-					<option value="">Select Time</option>
-					<option value="1">11:00 AM - 11:45 AM</option>
-					<option value="2">11:15 AM - 12:00 PM</option>
-					<option value="3">11:30 AM - 12:15 PM</option>
-					<option value="4">11:45 AM - 12:30 PM</option>
-					<option value="5">12:00 PM - 12:45 PM</option>
-					<option value="6">12:15 PM - 01:00 PM</option>
-					<option value="7">12:30 PM - 01:15 PM</option>
-					<option value="8">12:45 PM - 01:30 PM</option>
-					<option value="9">01:00 PM - 01:45 PM</option>
-					<option value="10">01:15 PM - 02:00 PM</option>
-					<option value="11">01:30 PM - 02:15 PM</option>
-					<option value="12">01:45 PM - 02:30 PM</option>
-					<option value="13">02:00 PM - 02:45 PM</option>
-					<option value="14">02:15 PM - 03:00 PM</option>
-					<option value="15">02:30 PM - 03:15 PM</option>
-					<option value="16">4:30 PM - 05:15 PM</option>
-					<option value="17">4:45 PM - 05:30 PM</option>
-					<option value="18">05:00 PM - 05:45 PM</option>
-					<option value="19">05:15 PM - 06:00 pm</option>
-					<option value="20">05:30 pm - 06:15 PM</option>
-					<option value="21">05:45 PM - 06:30 PM</option>
-					<option value="22">06:00 PM - 06:45 PM</option>
-					<option value="23">06:15 PM - 07:00 PM</option>
-					<option value="24">06:30 PM - 07:15 PM</option>
-					<option value="25">06:45 PM - 07:30 PM</option>
-					<option value="26">07:00 PM - 07:45 PM</option>
-					<option value="27">07:15 PM - 08:00 PM</option>
-					<option value="28">07:30 PM - 08:15 PM</option>
-					<option value="29">07:45 PM - 08:30 PM</option>
-					<option value="30">08:00 PM - 08:45 PM</option>
-					<option value="31">08:15 PM - 09:00 PM</option>
-					</select>
-						</div>
-					</div>
+						data-aos-duration="600">Add<i class="ri-check-fill ms-2" ></i></a>
 				</div>
 			</div>
 		</div>
@@ -303,14 +242,6 @@ foreach ($menu_categories->elements as &$category) {
 
 	<?php include('footer.php') ?>
 	<?php include('sidenav.php') ?>
-
-	<!-- <script>
-		 window.onload = function() {
-			var modal = document.getElementById('exampleModal1');
-			modal.style.display = 'block';
-			modal.classList.add("show");
-		 }
-	</script> -->
 
 	<script>
 		document.addEventListener('DOMContentLoaded', function () {
@@ -431,52 +362,37 @@ foreach ($menu_categories->elements as &$category) {
 	</script>
 
 	<script>
-
-	function addToCart() {
-		const productid = document.getElementById('productid').value;
-		const productname = document.getElementById('productname').value;
-		const productprice = document.getElementById('productprice').value;
-		const productqty = document.getElementById('productqty').value;
-		const modifierid = document.getElementById('modifierid').value;
-		const modifiername = document.getElementById('modifiername').value;
-		const modifierprice = document.getElementById('modifierprice').value;
-		const price = parseFloat(productprice.replace(/[^0-9.-]+/g, ""));
-		const producttotal = parseFloat(price) * parseInt(productqty);
-
-		const params = new URLSearchParams({
-			productid,
-			productname,
-			productprice,
-			productqty,
-			modifierid,
-			modifiername,
-			modifierprice,
-			producttotal
-		}).toString();
-
-		const xhr = new XMLHttpRequest();
-		xhr.open("POST", "add-to-cart.php", true);
-		xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-		xhr.send(params);
-
-		xhr.onload = function () {
-			if (xhr.status === 200) {
-				const response = JSON.parse(xhr.responseText);
-				if (response.status === "success") {
-					console.log('Product added to cart successfully.');
-					window.location.reload(); // Reload the page after a successful add to cart
-				} else {
-					console.error('Failed to add product to cart:', response.message);
-					alert('Error: Unable to add product to cart.');
+		function addToCart() {
+			debugger;
+			// Assume you're fetching these from some form fields
+			const productid = document.getElementById('productid').value;
+			const productname = document.getElementById('productname').value;
+			const productprice = document.getElementById('productprice').value;
+			const productqty = document.getElementById('productqty').value;
+			const modifierid = document.getElementById('modifierid').value;
+			const modifiername = document.getElementById('modifiername').value;
+			const modifierprice = document.getElementById('modifierprice').value;
+			const price = parseFloat(productprice.replace(/[^0-9.-]+/g,""));
+			const producttotal = parseFloat(price) * (productqty > 0 ? parseInt(productqty) : 1); // Example calculation
+			debugger;
+			var params = `productid=${encodeURIComponent(productid)}&productname=${encodeURIComponent(productname)}&productprice=${productprice}&productqty=${productqty}&modifierid=${modifierid}&modifiername=${encodeURIComponent(modifiername)}&modifierprice=${modifierprice}&producttotal=${producttotal}`;
+			debugger;
+			var xhr = new XMLHttpRequest();
+			xhr.open("POST", "add-to-cart.php", true);
+			xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+			xhr.send(params);
+			debugger;
+			xhr.onload = function() {
+				debugger;
+				if (xhr.status == 200) {
+					debugger;
+					console.log('Product added to cart');
+					window.location.reload();
 				}
-			} else {
-				console.error('Failed to send request. Status:', xhr.status);
-				alert('Error: Something went wrong!');
-			}
-		};
-	}
+			};
+		}
+	</script>
 
-		</script>
 	<script src="vender/bootstrap/js/bootstrap.bundle.min.js"></script>
 	<script src="vender/jquery/jquery-3.6.4.min.js"></script>
 	<script src="vender/aos/dist/aos.js"></script>

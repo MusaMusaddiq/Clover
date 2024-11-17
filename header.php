@@ -35,7 +35,7 @@
 						</li>
 						<li class="nav-item"><a class="nav-link" href="about.php">About </a></li>
 						<li class="nav-item"><a class="nav-link" href="menu.php">Menu </a></li>
-						<li class="nav-item"><a class="nav-link" href="services.php">Gallery </a></li>
+						<li class="nav-item"><a class="nav-link" href="gallery.php">Gallery </a></li>
 						<li class="nav-item"><a class="nav-link" href="contact.php">Contact </a></li>
 						<li class="nav-item my-auto">
 							<a href="cart.php">
