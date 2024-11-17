@@ -169,19 +169,21 @@ a {
 }
 
 .add-to_cart{
-    text-wrap: nowrap;
-    background: #c1c1c1;
-    padding: 6px 15px;
-    color: black;
+	text-wrap: nowrap;
+    padding: 3px 12px;
+    color: black ;
     cursor: pointer;
+    border: 1px solid #212529;
+    border-radius: 8px;
 }
 
 
 .add-to_cart:hover{
     text-wrap: nowrap;
     background: #418043;
-    padding: 6px 15px;
-    color: black;
+	border: 1px solid #418043;
+	padding: 3px 12px;
+    color: white;
     cursor: pointer;
 }
 

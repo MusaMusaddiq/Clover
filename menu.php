@@ -121,13 +121,13 @@ foreach ($menu_categories->elements as &$category) {
 							?>
 			<div class="col-lg-6 col-12" data-aos="fade-right" data-aos-duration="500">
 				<div class="d-flex align-items-center justify-content-between gap-3 w-100">
-					<h3 class="flex-shrink-0">
+					<h5 class="flex-shrink-0">
 						<?php echo $prod->name ?> - $
 						<?php echo $prod->price/100 ?>
-					</h3>
+					</h5>
 					<hr class="w-100" />
-					<a data-bs-toggle="modal" data-bs-target="#exampleModal" class="text-light add-to_cart cp"
-						data-product-id="<?php echo $prod->id; ?>">Add To Cart</a>
+					<a data-bs-toggle="modal" data-bs-target="#exampleModal" class="add-to_cart cp"
+						data-product-id="<?php echo $prod->id; ?>">Add</a>
 				</div>
 				<!-- <p class="text-secondary-emphasis mb-0">Maecenas interdum lorem eleifend aliquam mollis. </p> -->
 			</div>
@@ -166,7 +166,7 @@ foreach ($menu_categories->elements as &$category) {
 					<div id="modifiers-list"></div>
 
 					<div class="row">
-						<div class="col-4">
+						<div class="col-md-4 col-6 ">
 							<div class="input-group">
 								<button class="btn btn-outline-secondary" id="decrement-item-btn" type="button"
 									onclick="qty('remove')">-</button>
@@ -176,7 +176,7 @@ foreach ($menu_categories->elements as &$category) {
 									onclick="qty('add')">+</button>
 							</div>
 						</div>
-						<div class="col-6 my-auto text-center">
+						<div class="col-md-6 col-6 my-auto text-center">
 							<h4 class="m-0" id="totalAmount">$</h4>
 						</div>
 					</div>
@@ -212,24 +212,17 @@ foreach ($menu_categories->elements as &$category) {
 			<div class="row">
 				<div class="col-12">
 					<div class="card text-bg-dark border-0 rounded-0 h-100">
-						<img src="img/subscribe.jpg" class="card-img rounded-0 opacity-50" alt="subscribe" />
+						<img src="img/subscribe.jpg" class="card-img rounded-0 opacity-50" alt="subscribe">
 						<div class="card-img-overlay d-flex align-items-center justify-content-center text-center">
 							<div class="row justify-content-center">
 								<div class="col-xl-7 col-lg-8 col-md-10 col-12">
-									<h1 class="card-title pb-2" data-aos="fade-up" data-aos-duration="500">Subscribe and
-										get 20% ________ </h1>
-									<p class="card-text" data-aos="fade-up" data-aos-duration="600">
-										Donec convallis, elit vitae ______ cursus, libero purus facilisis ______
-										volutpat metus tortor bibendum ____. Integer nec mi eleifend, _________ lorem
-										vitae, finibus neque.
+									<h1 class="card-title title pb-2 aos-init" data-aos="fade-up" data-aos-duration="600">Subscribe and get 20% discount</h1>
+									<p class="card-text aos-init" data-aos="fade-up" data-aos-duration="700">
+										Donec convallis, elit vitae ornare cursus, libero purus facilisis felisa volutpat metus tortor bibendum elit. Integer nec mi eleifend, fermentum lorem vitae, finibus neque.
 									</p>
-									<form
-										class="bg-white p-3 d-grid d-md-flex align-items-center justify-content-center gap-3 mt-5 w-75 mx-auto"
-										data-aos="fade-up" data-aos-duration="800">
-										<input class="form-control bg-transparent border-0 rounded-0 py-2 shadow-none"
-											type="email" placeholder="Your Email Address" />
-										<button class="btn btn-success btn-lg rounded-0 text-uppercase">Subscribe
-										</button>
+									<form class="bg-white p-3 d-grid d-md-flex align-items-center justify-content-center gap-3 mt-5 w-75 mx-auto aos-init" data-aos="fade-up" data-aos-duration="800">
+										<input class="form-control bg-transparent border-0 rounded-0 py-2 shadow-none" type="email" placeholder="Your Email Address">
+										<button class="btn btn-success btn-lg rounded-0 text-uppercase">Subscribe</button>
 									</form>
 								</div>
 							</div>
@@ -245,21 +238,21 @@ foreach ($menu_categories->elements as &$category) {
 
 	<script>
 		document.addEventListener('DOMContentLoaded', function () {
-			debugger;
+			// debugger;
 			const cartButtons = document.querySelectorAll('.add-to_cart');
 
 			cartButtons.forEach(button => {
-				debugger;
+				// debugger;
 				button.addEventListener('click', function (event) {
 					event.preventDefault();
-					debugger;
+					// debugger;
 					const productId = this.getAttribute('data-product-id');
 					document.getElementById('productid').value = productId;
 					// Make an AJAX request to fetch item details
 					fetch(`get-modifiers.php?productId=${productId}`)
 						.then(response => response.json())
 						.then(res => {
-							debugger;
+							// debugger;
 							const data = res.data;
 							const itemName = data.name; // Item Name
 							const itemPrice = data.price / 100; // Item Price in dollars
@@ -281,7 +274,7 @@ foreach ($menu_categories->elements as &$category) {
 
 							modifierData = res.modifierData;
 							modifierData.elements.forEach((modifier, index) => {
-								debugger;
+								// debugger;
 								const modifierName = modifier.name;
 								const modifierPrice = modifier.price / 100;
 								const modifierId = modifier.id;
@@ -302,7 +295,7 @@ foreach ($menu_categories->elements as &$category) {
 								modifiersList.appendChild(modifierRow);
 								const radioButton = modifierRow.querySelector('.modifier-radio');
 								radioButton.addEventListener('change', () => {
-									debugger;
+									// debugger;
 									document.getElementById('modifierid').value = modifierId;
 									document.getElementById('modifiername').value = modifierName;
 									document.getElementById('modifierprice').value = modifierPrice;
@@ -335,7 +328,7 @@ foreach ($menu_categories->elements as &$category) {
 	<script>
 	
 		function qty(action) {
-			debugger;
+			// debugger;
 			const quantityElement = document.getElementById('item-quantity');
 			let currentQuantity = parseInt(quantityElement.value);
 
@@ -363,7 +356,7 @@ foreach ($menu_categories->elements as &$category) {
 
 	<script>
 		function addToCart() {
-			debugger;
+			// debugger;
 			// Assume you're fetching these from some form fields
 			const productid = document.getElementById('productid').value;
 			const productname = document.getElementById('productname').value;
@@ -374,18 +367,18 @@ foreach ($menu_categories->elements as &$category) {
 			const modifierprice = document.getElementById('modifierprice').value;
 			const price = parseFloat(productprice.replace(/[^0-9.-]+/g,""));
 			const producttotal = parseFloat(price) * (productqty > 0 ? parseInt(productqty) : 1); // Example calculation
-			debugger;
+			// debugger;
 			var params = `productid=${encodeURIComponent(productid)}&productname=${encodeURIComponent(productname)}&productprice=${productprice}&productqty=${productqty}&modifierid=${modifierid}&modifiername=${encodeURIComponent(modifiername)}&modifierprice=${modifierprice}&producttotal=${producttotal}`;
-			debugger;
+			// debugger;
 			var xhr = new XMLHttpRequest();
 			xhr.open("POST", "add-to-cart.php", true);
 			xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 			xhr.send(params);
-			debugger;
+			// debugger;
 			xhr.onload = function() {
-				debugger;
+				// debugger;
 				if (xhr.status == 200) {
-					debugger;
+					// debugger;
 					console.log('Product added to cart');
 					window.location.reload();
 				}
